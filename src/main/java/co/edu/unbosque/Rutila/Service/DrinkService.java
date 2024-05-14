@@ -50,6 +50,22 @@ public class DrinkService {
         }
     }
 
+
+    public DrinkModel agregarInventario(String nombre, int inventario) {
+        // Busca la bebida por su nombre
+        DrinkModel drink = drinkRepository.findByNameAndDeletedAtIsNull(nombre);
+
+        if (drink != null) { // Si la bebida existe
+            // Actualiza el inventario
+            drink.setAvailability(inventario);
+            // Guarda los cambios en la base de datos y devuelve la bebida actualizada
+            return drinkRepository.save(drink);
+        } else {
+            // Maneja el caso en que la bebida no existe
+            return null;
+        }
+    }
+
     public DrinkModel searchByPrice (double price){
 
         return drinkRepository.findByPriceAndDeletedAtIsNull(price);

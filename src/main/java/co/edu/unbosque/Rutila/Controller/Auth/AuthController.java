@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,8 @@ public class AuthController {
 
 
 
+
+
     @PostMapping("/autenticar")
     @Operation(summary = "Autenticar un usuario", description = "Autentica a un usuario.")
     @ApiResponses(value = {
@@ -43,16 +46,16 @@ public class AuthController {
         String email = userLoginRequest.getEmail();
         String userPassword = userLoginRequest.getUserPassword();
 
-       String user = userService.searchByemail(email).getHash_password();
-System.out.println(user);
+        // Autenticar al usuario
+        UserModel authenticatedUser = userService.authenticationUser(email, userPassword);
 
-        if (user != null) {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            if (passwordEncoder.matches(userPassword, user)) {
-                return ResponseEntity.ok("Usuario autenticado exitosamente");
-            }
+        if (authenticatedUser != null) {
+            // Si el usuario se autentica exitosamente, devolver un código 200 con un mensaje de éxito
+            return ResponseEntity.ok("Usuario autenticado exitosamente");
+        } else {
+            // Si las credenciales son inválidas, devolver un código 401 con un mensaje de error
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
     }
+
 }

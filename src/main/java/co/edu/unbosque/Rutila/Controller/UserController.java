@@ -37,8 +37,7 @@ public class UserController {
     })
     public ResponseEntity<String> guardarUsuario(@RequestBody UserModel user) {
         try {
-            String hashedPassword = new BCryptPasswordEncoder().encode(user.getHash_password());
-            user.setHash_password(hashedPassword);
+            ;
             user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             userService.saveUser(user);
             return ResponseEntity.ok("Usuario guardado con éxito");

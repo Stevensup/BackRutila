@@ -116,16 +116,35 @@ private TypeDrinkService TypedrinkService;
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Borrado Logico", description = "Elimina un Cliente existente según su ID.")
+    @Operation(summary = "Borrado Logico", description = "Elimina una bebida existente según su ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Cliente eliminado exitosamente", content = @Content(schema = @Schema(implementation = DrinkModel.class))),
-            @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
+            @ApiResponse(responseCode = "202", description = "bebida eliminada exitosamente", content = @Content(schema = @Schema(implementation = DrinkModel.class))),
+            @ApiResponse(responseCode = "404", description = "bebida no encontrada")
     })
     public ResponseEntity<DrinkModel> eliminadoLogicoDrink(@PathVariable int id) {
         DrinkModel actualizadoDrink;
         LocalDateTime now = LocalDateTime.now();
         Timestamp deletedTimestamp = Timestamp.valueOf(now);
         actualizadoDrink= drinkService.eliminadoLogico(id, deletedTimestamp );
+
+        if (actualizadoDrink != null) {
+            return ResponseEntity.ok(actualizadoDrink);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @PutMapping("/{name}/{availability}")
+    @Operation(summary = "Agregar Inventario", description = "Agregar inventario de la bebida")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Agregado el inventario", content = @Content(schema = @Schema(implementation = DrinkModel.class))),
+            @ApiResponse(responseCode = "404", description = "inventario  no agregado")
+    })
+    public ResponseEntity<DrinkModel> agregarInventario(@PathVariable String name,int availability) {
+        DrinkModel actualizadoDrink;
+
+        actualizadoDrink= drinkService.agregarInventario(name, availability);
 
         if (actualizadoDrink != null) {
             return ResponseEntity.ok(actualizadoDrink);
