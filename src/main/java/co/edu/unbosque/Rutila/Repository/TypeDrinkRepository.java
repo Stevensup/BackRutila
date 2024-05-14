@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TypeDrinkRepository extends JpaRepository<TypeDrinkModel,Integer> {
 
-
+    TypeDrinkModel findByTypes(String type);
 }

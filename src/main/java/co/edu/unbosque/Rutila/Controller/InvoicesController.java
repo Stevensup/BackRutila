@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
 @RestController
@@ -30,14 +33,50 @@ public class InvoicesController {
     })
     public ResponseEntity<String> crearFactura(@RequestBody InvoiceModel invoice) {
         try {
+
+            invoice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             InvoiceModel nuevoInvoice = invoiceService.saveInvoice(invoice);
             return ResponseEntity.ok("Se inserto la factura");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("No se inserto la factura");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar la factura"+ e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar la factura" + e.getMessage());
         }
     }
 
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Borrado Logico", description = "Elimina un Factura existente según su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Factura eliminado exitosamente", content = @Content(schema = @Schema(implementation = InvoiceModel.class))),
+            @ApiResponse(responseCode = "404", description = "Factura no encontrado")
+    })
+    public ResponseEntity<InvoiceModel> eliminadoLogicoDrink(@PathVariable int id) {
+        InvoiceModel actualizadoInvoice;
+        LocalDateTime now = LocalDateTime.now();
+        Timestamp deletedTimestamp = Timestamp.valueOf(now);
+        actualizadoInvoice=  invoiceService.eliminadoLogico(id, deletedTimestamp );
+        if (actualizadoInvoice != null) {
+            return ResponseEntity.ok(actualizadoInvoice);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @GetMapping("/fecha/{dates}")
+    @Operation(summary = "Obtener Factura por su fecha", description = "Obtener los Facturas por sus fechas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Facturas encontrado"),
+            @ApiResponse(responseCode = "404", description = "Facturas no encontrado")
+    })
+    public ResponseEntity<InvoiceModel> obtenerFacturasPorDates(@PathVariable String dates) {
+      InvoiceModel invoice = invoiceService.searchBydates(dates);
+        if (invoice != null) {
+            return ResponseEntity.ok(invoice);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

@@ -1,11 +1,15 @@
 package co.edu.unbosque.Rutila.Service;
 
+import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.UserModel;
 import co.edu.unbosque.Rutila.Repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -31,17 +35,19 @@ private UserRepository userRepository;
 
 
     }
-    public boolean deleteUser( int id){
-        if(userRepository.existsById(id)){
-            userRepository.deleteById(id);
-            return true;
-        }else{
-            return false;
-        }
+    public UserModel eliminadoLogico(int id, Timestamp deleted) {
+        Optional<UserModel> optionalUser = userRepository.findById(id);
 
+        if (optionalUser.isPresent()) {
+            UserModel user = optionalUser.get();
+            user.setDeletedAt(deleted);
+            return userRepository.save(user);
+        } else {
+            return null;
+        }
     }
     public UserModel authenticationUser(String email,String password){
-        UserModel user= userRepository.findByEmail(email);
+        UserModel user= userRepository.findByEmailAndDeletedAtIsNull(email);
         if(user!= null){
             if(user.getHash_password() !=null && user.getHash_password().equals(password)){
                 return user ;
@@ -50,6 +56,16 @@ private UserRepository userRepository;
         return null;
     }
 
+
+    public UserModel searchByname(String name){
+
+        return userRepository.findByNameAndDeletedAtIsNull(name);
+    }
+
+    public UserModel searchByemail(String email){
+
+        return userRepository.findByEmailAndDeletedAtIsNull(email);
+    }
 
 
 }

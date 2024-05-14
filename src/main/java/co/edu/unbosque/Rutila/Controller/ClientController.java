@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * This class represents the controller for managing clients in the application.
@@ -37,13 +38,14 @@ public class ClientController {
 			@ApiResponse(responseCode = "200", description = "Operación exitosa", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ClientController.class))))
 	})
 	public ResponseEntity<CustomersModel> crearCliente(@RequestBody CustomersModel cliente) {
+		cliente.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		CustomersModel nuevoCliente = clientService.saveClient(cliente);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCliente);
 	}
 
 
-	@GetMapping("/{name}")
+	@GetMapping("/nombre/{name}")
 	@Operation(summary = "Obtener Cliente por Nombre", description = "Obtiene un cliente existente según su nombre.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Cliente encontrado exitosamente", content = @Content(schema = @Schema(implementation = CustomersModel.class))),
@@ -58,7 +60,7 @@ public class ClientController {
 		}
 	}
 
-	@GetMapping("/{phone}")
+	@GetMapping("/celular/{phone}")
 	@Operation(summary = "Obtener Cliente por Telefono", description = "Obtiene un cliente existente según su Telefono.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Cliente encontrado exitosamente", content = @Content(schema = @Schema(implementation = CustomersModel.class))),
@@ -75,7 +77,7 @@ public class ClientController {
 
 
 
-	@GetMapping("/{email}")
+	@GetMapping("/correo/{email}")
 	@Operation(summary = "Obtener Cliente por Correo", description = "Obtiene un cliente existente según su correo.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Cliente encontrado exitosamente", content = @Content(schema = @Schema(implementation = CustomersModel.class))),
@@ -96,21 +98,17 @@ public class ClientController {
 			@ApiResponse(responseCode = "202", description = "Cliente eliminado exitosamente", content = @Content(schema = @Schema(implementation = CustomersModel.class))),
 			@ApiResponse(responseCode = "404", description = "Cliente no encontrado")
 	})
-	public ResponseEntity<CustomersModel> eliminadoLogicoClient(@PathVariable int id, @RequestParam(required = false) Timestamp deleted) {
+	public ResponseEntity<CustomersModel> eliminadoLogicoClient(@PathVariable int id) {
 		CustomersModel actualizadoCliente;
-
-		if (deleted != null) {
-			actualizadoCliente = clientService.eliminadoLogico(id, deleted);
-		} else {
-
-			return ResponseEntity.badRequest().build();
-		}
+		LocalDateTime now = LocalDateTime.now();
+		Timestamp deletedTimestamp = Timestamp.valueOf(now);
+		actualizadoCliente = clientService.eliminadoLogico(id, deletedTimestamp );
 
 		if (actualizadoCliente != null) {
-			return ResponseEntity.ok(actualizadoCliente);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(actualizadoCliente);
+	} else {
+		return ResponseEntity.notFound().build();
+	}
 	}
 
 

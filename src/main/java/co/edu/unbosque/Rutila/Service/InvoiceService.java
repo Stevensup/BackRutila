@@ -1,5 +1,6 @@
 package co.edu.unbosque.Rutila.Service;
 
+import co.edu.unbosque.Rutila.Model.DrinkModel;
 import co.edu.unbosque.Rutila.Model.InvoiceModel;
 import co.edu.unbosque.Rutila.Repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
+import java.util.Optional;
+
 @Service
 public class InvoiceService {
     private final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+
 
     @Transactional
     public InvoiceModel saveInvoice(InvoiceModel invoice){
@@ -23,10 +28,13 @@ public class InvoiceService {
         return invoiceModel;
     }
 
-    public InvoiceModel updateInvoice(int id,InvoiceModel invoice) {
-        if (invoiceRepository.existsById(id)) {
-            invoice.setId(id);
-            return invoiceRepository.save(invoice);
+    public  InvoiceModel eliminadoLogico(int id, Timestamp deleted) {
+        Optional<InvoiceModel> optionalInvoice = invoiceRepository.findById(id);
+
+        if (optionalInvoice.isPresent()) {
+            InvoiceModel existingInvoice = optionalInvoice.get();
+            existingInvoice.setDeletedAt(deleted);
+            return invoiceRepository.save(existingInvoice);
         } else {
             return null;
         }
@@ -34,11 +42,15 @@ public class InvoiceService {
 
 
         public InvoiceModel searchByid(int id){
-        return invoiceRepository.findById(id).orElse(null);
+
+        return invoiceRepository.findByIdAndDeletedAtIsNull(id);
         }
 
 
 
+        public InvoiceModel searchBydates(String dates){
+        return invoiceRepository.findByDatesAndDeletedAtIsNull(dates);
+        }
 
 
 

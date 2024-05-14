@@ -1,6 +1,8 @@
 package co.edu.unbosque.Rutila.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,32 +19,38 @@ public class OrderModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private Time dates;
+    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "El formato debe ser HH:mm")
+    private String dates;
+    @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
-
-    @Column(name = "updated_at", nullable = false)
+    @JsonIgnore
+    @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
-
+    @JsonIgnore
+    @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
-private List<InvoiceModel> invoices;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetailsModel>orderDetail;
+    @JsonIgnore
+    @Column(name = "id_customer")
+    private int idcustomers;
 
-    @ManyToOne()
-    @JoinColumn(name = "id", insertable = false, updatable = false)
-    private CustomersModel customers;
 
-    @ManyToOne()
-       @JoinColumn(name="id", insertable = false, updatable = false)
-       private BarModel pubs;
+    private String nameClient;
 
-    @ManyToOne()
-       @JoinColumn(name="id", insertable = false, updatable = false)
-       private UserModel users;
+    @JsonIgnore
+    @Column(name = "id_pub")
+       private int idpubs;
+
+    private String namePub;
+
+    @JsonIgnore
+    @Column(name = "id_user")
+       private int idusers;
+
+
+    private String nameUser;
 
 
 
@@ -56,7 +64,7 @@ private List<InvoiceModel> invoices;
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
-                ", pubs=" + pubs +
+
                 '}';
     }
 }

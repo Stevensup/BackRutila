@@ -1,5 +1,6 @@
 package co.edu.unbosque.Rutila.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -18,20 +19,23 @@ public class OrderDetailsModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int amount;
+
+    @Transient
+    private String nombrebebida;
+    @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
-
-    @Column(name = "updated_at", nullable = false)
+    @JsonIgnore
+    @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
-
+    @JsonIgnore
+    @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
-    @ManyToOne ()
-    @JoinColumn(name = "id", insertable = false, updatable = false)
-    private OrderModel orders;
 
-    @ManyToOne()
-    @JoinColumn(name = "id", insertable = false, updatable = false)
-    private DrinkModel drinks;
+    private int id_order;
+
+    @JsonIgnore
+    private int id_drink;
 
     @Override
     public String toString() {
@@ -41,8 +45,6 @@ public class OrderDetailsModel {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
-                ", orders=" + orders +
-                ", drinks=" + drinks +
                 '}';
     }
 }

@@ -18,27 +18,24 @@ public class TypeDrinkModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(nullable = false)
-    private String type;
-
+    private String types;
+    @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
-
-    @Column(name = "updated_at", nullable = false)
+    @JsonIgnore
+    @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
-
+    @JsonIgnore
+    @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "id" ,fetch = FetchType.LAZY)
-    private List<DrinkModel> drinks;
+
 
     @Override
     public String toString() {
         return "TypeDrinkModel{" +
                 "id=" + id +
-                ", type='" + type + '\'' +
+                ", type='" + types + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +

@@ -14,12 +14,12 @@ import org.springframework.stereotype.Repository;
 public interface ClientRepository extends JpaRepository<CustomersModel, Integer> {
 
 
-    CustomersModel findByName(String name);
+    CustomersModel findByNameAndDeletedAtIsNull(String name);
 
 
-    CustomersModel findByPhone(String phone);
+    CustomersModel findByPhoneAndDeletedAtIsNull(String phone);
 
-    CustomersModel findByEmail(String email);
+    CustomersModel findByEmailAndDeletedAtIsNull(String email);
 
 
 

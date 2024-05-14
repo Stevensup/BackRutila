@@ -1,5 +1,6 @@
 package co.edu.unbosque.Rutila.Service;
 
+import co.edu.unbosque.Rutila.Model.DrinkModel;
 import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
 import co.edu.unbosque.Rutila.Repository.OrderDetailsRepository;
 import org.slf4j.LoggerFactory;
@@ -7,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
+
+import java.sql.Timestamp;
+import java.util.Optional;
 
 @Service
 public class OrderDetailsService {
@@ -21,6 +25,20 @@ public class OrderDetailsService {
         OrderDetailsModel orderDetailsModel = orderDetailsRepository.save(orderDetail);
         logger.info("Se guardo exitosamente");
         return orderDetailsModel;
+    }
+
+
+
+    public OrderDetailsModel eliminadoLogico(int id, Timestamp deleted) {
+        Optional<OrderDetailsModel> optionalOrder= orderDetailsRepository.findById(id);
+
+        if (optionalOrder.isPresent()) {
+            OrderDetailsModel existingOrder = optionalOrder.get();
+            existingOrder.setDeletedAt(deleted);
+            return orderDetailsRepository.save(existingOrder);
+        } else {
+            return null;
+        }
     }
 
 }

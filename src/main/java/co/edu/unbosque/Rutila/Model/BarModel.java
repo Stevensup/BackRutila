@@ -1,13 +1,18 @@
 package co.edu.unbosque.Rutila.Model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import java.sql.Time;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import java.sql.Timestamp;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.Date;
+import jakarta.validation.constraints.Pattern;
+
 
 @Data
 @Entity
@@ -27,22 +32,24 @@ public class BarModel {
     private String location;
 
     private String phone;
-    private Time entrytime;
-    private Time closingtime;
+    // Ignorar en la base de datos
+    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "El formato debe ser HH:mm")
+    private String entrytime;
 
+   // Ignorar en la base de datos
+    @Pattern(regexp = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$", message = "El formato debe ser HH:mm")
+    private String closingtime;
+
+
+@JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
-
-    @Column(name = "updated_at", nullable = false)
+@JsonIgnore
+    @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
-
+@JsonIgnore
+@Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
-    @JsonIgnore
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<OrderModel> orders;
-    @JsonIgnore
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
-   private List<CustomersModel> customers;
 
 
 
@@ -59,7 +66,7 @@ public class BarModel {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
-                ", clients=" + customers +
+
                 '}';
     }
 }

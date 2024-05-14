@@ -26,22 +26,24 @@ public class DrinkModel {
     private String name;
     private double price;
     private int availability;
-
+    @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
-
-    @Column(name = "updated_at", nullable = false)
+    @JsonIgnore
+    @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
-
+    @JsonIgnore
+    @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
+    @JsonIgnore
+    @Column(name = "id_type")
+    private int  idtype;
 
-    @ManyToOne
-    @JoinColumn(name = "id", insertable = false, updatable = false) // Corrige el nombre de la columna según la tabla
-    private TypeDrinkModel type;
 
-     @JsonIgnore
-    @OneToMany(mappedBy = "id",fetch = FetchType.LAZY)
-    private List<OrderDetailsModel> orderDetails;
+    private String type;
+
+
+
 
 
 
@@ -52,7 +54,6 @@ public class DrinkModel {
         return "DrinkModel{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", types=" + type +
                 ", price=" + price +
                 ", availability=" + availability +
                 ", createdAt=" + createdAt +

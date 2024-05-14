@@ -1,6 +1,7 @@
 package co.edu.unbosque.Rutila.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -28,20 +29,18 @@ public class CustomersModel {
 
     private String phone;
     private String email;
-
+@JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
-
-    @Column(name = "updated_at", nullable = false)
+@JsonIgnore
+    @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
-
+@JsonIgnore
+@Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
-    @JsonIgnore
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
-    private List<OrderModel> orders;
-    @ManyToOne
-    @JoinColumn(name = "id", insertable = false, updatable = false)
-    private BarModel pubs;
+
+
+
 
     @Override
     public String toString() {
@@ -54,7 +53,7 @@ public class CustomersModel {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
-                ", pubs=" + pubs +
+
                 '}';
     }
 }

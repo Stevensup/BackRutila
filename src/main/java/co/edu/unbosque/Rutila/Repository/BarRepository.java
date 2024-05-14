@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface BarRepository extends JpaRepository<BarModel,Integer> {
 
 
-    BarModel findBylocation (String location);
+    BarModel findByLocationAndDeletedAtIsNull(String location);
 
-    BarModel findByname (String name);
+    BarModel findBynameAndDeletedAtIsNull (String name);
 }

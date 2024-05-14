@@ -47,17 +47,17 @@ public class ClientService {
 
     public CustomersModel searchClientByName(String name) {
 
-        return clientRepository.findByName(name);
+        return clientRepository.findByNameAndDeletedAtIsNull(name);
     }
 
     public CustomersModel searchClientByPhone(String phone) {
 
-        return clientRepository.findByPhone(phone);
+        return clientRepository.findByPhoneAndDeletedAtIsNull(phone);
     }
 
     public CustomersModel searchClientByEmail(String email) {
 
-        return clientRepository.findByEmail(email);
+        return clientRepository.findByEmailAndDeletedAtIsNull(email);
     }
 
 

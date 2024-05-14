@@ -36,6 +36,7 @@ public class BarController {
     })
     public ResponseEntity<String> guardarBar(@RequestBody BarModel bar) {
         try{
+            bar.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             barService.saveBar(bar);
             return ResponseEntity.ok("Bar guardado con éxito");
         }catch (Exception e){

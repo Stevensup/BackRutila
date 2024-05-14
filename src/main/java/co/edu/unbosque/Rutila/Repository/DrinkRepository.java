@@ -10,10 +10,11 @@ import java.util.List;
 
 @Repository
 public interface DrinkRepository extends JpaRepository<DrinkModel,Integer> {
-    List<DrinkModel> findByType_Id(int id);
 
-DrinkModel findByPrice(double price);
+    List<DrinkModel> findByIdtypeAndDeletedAtIsNull(int id);
 
-DrinkModel findByName(String name);
+DrinkModel findByPriceAndDeletedAtIsNull(double price);
+
+DrinkModel findByNameAndDeletedAtIsNull(String name);
 
 }

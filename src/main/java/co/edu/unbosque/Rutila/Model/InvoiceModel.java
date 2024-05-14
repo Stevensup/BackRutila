@@ -1,6 +1,8 @@
 package co.edu.unbosque.Rutila.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,19 +22,19 @@ public class InvoiceModel {
     private int id;
 
     private double total;
-    private Timestamp dates;
-
+    @Pattern(regexp = "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d{2} (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$", message = "El formato debe ser MM/dd/yyyy HH:mm")
+    private String dates;
+    @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
-
-    @Column(name = "updated_at", nullable = false)
+    @JsonIgnore
+    @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
-
+    @JsonIgnore
+    @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
 
-   @ManyToOne()
-    @JoinColumn(name="id", insertable = false, updatable = false)
-    private OrderModel orders;
+    private int orders;
 
 
     @Override

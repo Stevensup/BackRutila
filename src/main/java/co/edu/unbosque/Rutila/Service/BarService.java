@@ -45,14 +45,14 @@ public class BarService {
 
 
     public BarModel findByName(String name){
-        return barRepository.findByname(name);
+        return barRepository.findBynameAndDeletedAtIsNull(name);
 
     }
 
 
     public BarModel findByLocation(String location){
 
-        return barRepository.findBylocation(location);
+        return barRepository.findByLocationAndDeletedAtIsNull(location);
     }
 
 

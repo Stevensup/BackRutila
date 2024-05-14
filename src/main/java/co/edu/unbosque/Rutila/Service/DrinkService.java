@@ -2,6 +2,7 @@ package co.edu.unbosque.Rutila.Service;
 
 import co.edu.unbosque.Rutila.Model.DrinkModel;
 import co.edu.unbosque.Rutila.Repository.DrinkRepository;
+import co.edu.unbosque.Rutila.Repository.TypeDrinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,8 @@ public class DrinkService {
     private final Logger logger = LoggerFactory.getLogger(DrinkService.class);
     @Autowired
     private DrinkRepository drinkRepository;
+    @Autowired
+    private TypeDrinkRepository typeDrinkRepository;
 
     @Transactional
     public DrinkModel saveDrink(DrinkModel drink){
@@ -49,15 +52,15 @@ public class DrinkService {
 
     public DrinkModel searchByPrice (double price){
 
-        return drinkRepository.findByPrice(price);
+        return drinkRepository.findByPriceAndDeletedAtIsNull(price);
     }
     public DrinkModel searchByName (String name){
 
-        return drinkRepository.findByName(name);
+        return drinkRepository.findByNameAndDeletedAtIsNull(name);
     }
-    public List<DrinkModel> searchByType (int type){
-
-        return drinkRepository.findByType_Id(type);
+    public List<DrinkModel> searchByType (String type){
+        int id = typeDrinkRepository.findByTypes(type).getId();
+        return drinkRepository.findByIdtypeAndDeletedAtIsNull(id);
     }
 
 

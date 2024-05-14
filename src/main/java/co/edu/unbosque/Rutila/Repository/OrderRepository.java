@@ -9,8 +9,9 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<OrderModel,Integer> {
-    List<OrderModel> findByPubsName(String name);
+
+    List<OrderModel> findByIdpubsAndDeletedAtIsNull(int pubs);
 
 
-    List<OrderModel> findByUsersName(String name);
+    List<OrderModel> findByIdusersAndDeletedAtIsNull(int users);
 }
