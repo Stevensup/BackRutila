@@ -57,4 +57,10 @@ int id = userRepository.findByNameAndDeletedAtIsNull(name).getId();
         return orderRepository.findByIdpubsAndDeletedAtIsNull(id);
     }
 
+
+    public List<OrderModel>  findAll (){
+
+        return orderRepository.findAllByDeletedAtIsNull();
+    }
+
 }

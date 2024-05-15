@@ -1,6 +1,7 @@
 package co.edu.unbosque.Rutila.Controller;
 
 import co.edu.unbosque.Rutila.Model.BarModel;
+import co.edu.unbosque.Rutila.Model.InvoiceModel;
 import co.edu.unbosque.Rutila.Model.TypeDrinkModel;
 import co.edu.unbosque.Rutila.Service.TypeDrinkService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,7 +71,20 @@ private TypeDrinkService typeDrinkService;
     }
 
 
-
+    @GetMapping("/listar")
+    @Operation(summary = "Obtener lista de Tipo de bebida ", description = "Obtener lista de Tipo de bebida")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Tipo de bebida  encontrados"),
+            @ApiResponse(responseCode = "404", description = " Tipo de bebida no encontrados")
+    })
+    public ResponseEntity<List<TypeDrinkModel>> listarTipoBebida() {
+        List<TypeDrinkModel> type= typeDrinkService.findAll();
+        if (type != null) {
+            return ResponseEntity.ok(type);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 

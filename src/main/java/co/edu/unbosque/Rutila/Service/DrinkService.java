@@ -80,5 +80,9 @@ public class DrinkService {
     }
 
 
+    public List<DrinkModel> findAll (){
+        return drinkRepository.findAllByDeletedAtIsNull();
+    }
+
 }
 

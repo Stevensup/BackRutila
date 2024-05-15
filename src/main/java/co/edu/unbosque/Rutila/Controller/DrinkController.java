@@ -139,4 +139,20 @@ private TypeDrinkService TypedrinkService;
             return ResponseEntity.notFound().build();
         }
     }
+
+
+    @GetMapping("/listar")
+    @Operation(summary = "Obtener lista de bebidas ", description = "Obtener lista de bebidas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "bebidas encontrados"),
+            @ApiResponse(responseCode = "404", description = "bebidas no encontrados")
+    })
+    public ResponseEntity<List<DrinkModel>> listarBebidas() {
+        List <DrinkModel> drink = drinkService.findAll();
+        if (drink != null) {
+            return ResponseEntity.ok(drink);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

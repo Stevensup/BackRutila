@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,5 +41,7 @@ public class OrderDetailsService {
             return null;
         }
     }
-
+     public List<OrderDetailsModel> findALl (){
+   return orderDetailsRepository.findAllByDeletedAtIsNull();
+}
 }

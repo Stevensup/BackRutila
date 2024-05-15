@@ -14,4 +14,7 @@ public interface OrderRepository extends JpaRepository<OrderModel,Integer> {
 
 
     List<OrderModel> findByIdusersAndDeletedAtIsNull(int users);
+
+
+    List<OrderModel>  findAllByDeletedAtIsNull();
 }

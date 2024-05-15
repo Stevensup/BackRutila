@@ -40,25 +40,4 @@ public class DrinkModel {
     private int  idtype;
 
 
-
-
-
-
-
-
-
-
-
-    @Override
-    public String toString() {
-        return "DrinkModel{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", availability=" + availability +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", deletedAt=" + deletedAt +
-                '}';
-    }
 }

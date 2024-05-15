@@ -1,5 +1,6 @@
 package co.edu.unbosque.Rutila.Controller;
 
+import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
 import co.edu.unbosque.Rutila.Model.TypeDrinkModel;
 import co.edu.unbosque.Rutila.Service.ClientService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
@@ -77,7 +79,20 @@ public class DetailOrderController {
         }
     }
 
-
+    @GetMapping("/listar")
+    @Operation(summary = "Obtener lista de detalles de ordenes ", description = "Obtener lista de detalles de ordenes")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "detalles de ordenes encontrados"),
+            @ApiResponse(responseCode = "404", description = "detalles de ordenes no encontrados")
+    })
+    public ResponseEntity<List<OrderDetailsModel>> listarDetalles() {
+        List <OrderDetailsModel> orders = orderDetailsService.findALl();
+        if (orders != null) {
+            return ResponseEntity.ok(orders);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 

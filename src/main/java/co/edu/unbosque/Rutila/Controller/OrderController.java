@@ -1,6 +1,7 @@
 package co.edu.unbosque.Rutila.Controller;
 
 
+import co.edu.unbosque.Rutila.Model.CustomersModel;
 import co.edu.unbosque.Rutila.Model.OrderModel;
 import co.edu.unbosque.Rutila.Service.BarService;
 import co.edu.unbosque.Rutila.Service.ClientService;
@@ -109,7 +110,20 @@ public class OrderController {
         }
     }
 
-
+    @GetMapping("/listar")
+    @Operation(summary = "Obtener lista de ordenes ", description = "Obtener lista de ordenes")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "ordenes encontrados"),
+            @ApiResponse(responseCode = "404", description = " ordenes no encontrados")
+    })
+    public ResponseEntity<List<OrderModel>> listarOrdenes() {
+        List<OrderModel> order= orderService.findAll();
+        if (order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 

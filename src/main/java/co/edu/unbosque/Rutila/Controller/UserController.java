@@ -1,6 +1,7 @@
 package co.edu.unbosque.Rutila.Controller;
 
 
+import co.edu.unbosque.Rutila.Model.InvoiceModel;
 import co.edu.unbosque.Rutila.Model.UserModel;
 import co.edu.unbosque.Rutila.Service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
@@ -68,7 +70,20 @@ public class UserController {
         }
     }
 
-
+    @GetMapping("/listar")
+    @Operation(summary = "Obtener lista de Usuarios ", description = "Obtener lista de Usuarios")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuarios encontrados"),
+            @ApiResponse(responseCode = "404", description = " Usuarios no encontrados")
+    })
+    public ResponseEntity<List<UserModel>> listarUsers() {
+        List<UserModel> user= userService.findAll();
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 }

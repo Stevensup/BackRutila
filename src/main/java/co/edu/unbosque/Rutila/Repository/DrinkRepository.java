@@ -17,4 +17,7 @@ DrinkModel findByPriceAndDeletedAtIsNull(double price);
 
 DrinkModel findByNameAndDeletedAtIsNull(String name);
 
+
+List<DrinkModel>  findAllByDeletedAtIsNull();
+
 }

@@ -1,5 +1,6 @@
 package co.edu.unbosque.Rutila.Controller;
 
+import co.edu.unbosque.Rutila.Model.CustomersModel;
 import co.edu.unbosque.Rutila.Model.DrinkModel;
 import co.edu.unbosque.Rutila.Model.InvoiceModel;
 import co.edu.unbosque.Rutila.Service.InvoiceService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
@@ -79,4 +81,18 @@ public class InvoicesController {
         }
     }
 
+    @GetMapping("/listar")
+    @Operation(summary = "Obtener lista de factura ", description = "Obtener lista de factura")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "factura encontrados"),
+            @ApiResponse(responseCode = "404", description = " factura no encontrados")
+    })
+    public ResponseEntity<List<InvoiceModel>> listarFacturas() {
+        List<InvoiceModel> invoice= invoiceService.findAll();
+        if (invoice != null) {
+            return ResponseEntity.ok(invoice);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

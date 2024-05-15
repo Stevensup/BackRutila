@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * This class represents the controller for managing clients in the application.
@@ -110,7 +111,20 @@ public class ClientController {
 		return ResponseEntity.notFound().build();
 	}
 	}
-
+	@GetMapping("/listar")
+	@Operation(summary = "Obtener lista de clientes ", description = "Obtener lista de clientes")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "clientes encontrados"),
+			@ApiResponse(responseCode = "404", description = " clientes no encontrados")
+	})
+	public ResponseEntity<List<CustomersModel>> listarClientes() {
+		List<CustomersModel> customer= clientService.findAll();
+		if (customer != null) {
+			return ResponseEntity.ok(customer);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 
 }
