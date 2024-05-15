@@ -32,7 +32,7 @@ public class OrderModel {
     private Timestamp deletedAt;
 
 
-    @JsonIgnore
+
     @Column(name = "id_customer")
     private int idcustomers;
 

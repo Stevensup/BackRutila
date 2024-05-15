@@ -46,13 +46,7 @@ public class OrderController {
     })
     public ResponseEntity<String> crearOrden(@RequestBody OrderModel order) {
         try {
-            int idcliente= clientService.searchClientByName(order.getNameClient()).getId();
-            order.setIdcustomers(idcliente);
 
-            int iduser = userService.searchByname(order.getNameUser()).getId();
-            order.setIdusers(iduser);
-            int idbar= barService.findByName(order.getNamePub()).getId();
-           order.setIdpubs(idbar);
             order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             OrderModel nuevoOrder = orderService.saveOrder(order);
             return ResponseEntity.ok("Se inserto la ordene");

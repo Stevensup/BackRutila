@@ -34,7 +34,7 @@ public class OrderDetailsModel {
 
     private int id_order;
 
-    @JsonIgnore
+
     private int id_drink;
 
     @Override

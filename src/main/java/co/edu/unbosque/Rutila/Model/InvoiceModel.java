@@ -34,7 +34,7 @@ public class InvoiceModel {
     @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
 
-    private int orders;
+    private int id_order;
 
 
     @Override
@@ -46,7 +46,7 @@ public class InvoiceModel {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
-                ", orders=" + orders +
+                ", orders=" +id_order+
                 '}';
     }
 }
