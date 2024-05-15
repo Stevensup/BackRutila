@@ -35,12 +35,12 @@ public class DrinkModel {
     @JsonIgnore
     @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
-    @JsonIgnore
+
     @Column(name = "id_type")
     private int  idtype;
 
 
-    private String type;
+
 
 
 

@@ -42,24 +42,11 @@ private TypeDrinkService TypedrinkService;
     })
     public ResponseEntity<String> crearBebida(@RequestBody DrinkModel drink) {
         try {
-            // Verificar si TypedrinkService está inicializado
-            if (TypedrinkService == null) {
-                throw new RuntimeException("TypedrinkService no está inicializado correctamente");
-            }
 
-            // Buscar el tipo de bebida
-            TypeDrinkModel typeDrink = TypedrinkService.searchByType(drink.getType());
 
-            // Verificar si se encontró el tipo de bebida
-            if (typeDrink == null) {
-                throw new RuntimeException("Tipo de bebida no encontrado: " + drink.getType());
-            }
-
-            // Establecer el ID del tipo de bebida en la bebida y la fecha de creación
-            drink.setIdtype(typeDrink.getId());
             drink.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
-            // Guardar la bebida y retornar una respuesta exitosa
+
             DrinkModel nuevoDrink = drinkService.saveDrink(drink);
             return ResponseEntity.ok("Se insertó la bebida");
         } catch (Exception e) {
