@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,6 +56,11 @@ public class BarService {
         return barRepository.findByLocationAndDeletedAtIsNull(location);
     }
 
+
+    public List<BarModel> findAll(){
+        return barRepository.findAllByDeletedAtIsNull();
+
+    }
 
 
 

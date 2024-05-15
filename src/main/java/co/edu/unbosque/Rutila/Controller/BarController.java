@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Transactional
 @CrossOrigin(origins = { "http://localhost:8090", "http://localhost:8080", "*" })
@@ -95,6 +96,22 @@ public class BarController {
 
         if (actualizadoBar != null) {
             return ResponseEntity.ok(actualizadoBar);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @GetMapping("/listar")
+    @Operation(summary = "Obtener lista de bares ", description = "Obtener lista de bares")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bares encontrados"),
+            @ApiResponse(responseCode = "404", description = "Bares no encontrados")
+    })
+    public ResponseEntity<List<BarModel>> listarTodosBares() {
+       List <BarModel> bar = barService.findAll();
+        if (bar != null) {
+            return ResponseEntity.ok(bar);
         } else {
             return ResponseEntity.notFound().build();
         }

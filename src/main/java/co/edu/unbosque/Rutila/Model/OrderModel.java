@@ -37,20 +37,19 @@ public class OrderModel {
     private int idcustomers;
 
 
-    private String nameClient;
 
-    @JsonIgnore
+
     @Column(name = "id_pub")
        private int idpubs;
 
-    private String namePub;
 
-    @JsonIgnore
+
+
     @Column(name = "id_user")
        private int idusers;
 
 
-    private String nameUser;
+
 
 
 

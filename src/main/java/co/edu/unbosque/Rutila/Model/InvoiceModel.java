@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "invoice")
+@Table(name = "invoices")
 public class InvoiceModel {
 
     @Id
