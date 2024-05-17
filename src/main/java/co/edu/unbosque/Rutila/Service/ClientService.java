@@ -1,5 +1,6 @@
 package co.edu.unbosque.Rutila.Service;
 
+import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.CustomersModel;
 import co.edu.unbosque.Rutila.Repository.ClientRepository;
 import org.slf4j.Logger;
@@ -67,5 +68,13 @@ public class ClientService {
         return clientRepository.findAllByDeletedAtIsNull();
     }
 
+    public CustomersModel actualizarClient(int id, CustomersModel customersModel) {
+        if (clientRepository.existsById(id)) {
+            customersModel.setId(id);
+            return clientRepository.save(customersModel);
+        } else {
+            return null;
+        }
+    }
 
 }

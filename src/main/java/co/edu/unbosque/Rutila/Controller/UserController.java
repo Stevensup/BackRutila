@@ -1,6 +1,7 @@
 package co.edu.unbosque.Rutila.Controller;
 
 
+import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.InvoiceModel;
 import co.edu.unbosque.Rutila.Model.UserModel;
 import co.edu.unbosque.Rutila.Service.UserService;
@@ -39,7 +40,8 @@ public class UserController {
     })
     public ResponseEntity<String> guardarUsuario(@RequestBody UserModel user) {
         try {
-            ;
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+          user.setHash_password(passwordEncoder.encode(user.getHash_password()));
             user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             userService.saveUser(user);
             return ResponseEntity.ok("Usuario guardado con éxito");
@@ -82,6 +84,22 @@ public class UserController {
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar un usuario", description = "Actualiza un usuario existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario actualizado exitosamente", content = @Content(schema = @Schema(implementation = UserModel.class))),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<UserModel> actualizarUser(@PathVariable int id, @RequestBody UserModel userModel) {
+        UserModel actualizarUser = userService.actualizarUser(id, userModel);
+        if (actualizarUser != null) {
+            return ResponseEntity.ok(actualizarUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 

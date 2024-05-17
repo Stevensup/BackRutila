@@ -44,6 +44,15 @@ public class BarService {
         }
     }
 
+    public BarModel actualizarBar(int id, BarModel barModel) {
+        if (barRepository.existsById(id)) {
+            barModel.setId(id);
+            return barRepository.save(barModel);
+        } else {
+            return null;
+        }
+    }
+
 
     public BarModel findByName(String name){
         return barRepository.findBynameAndDeletedAtIsNull(name);

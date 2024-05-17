@@ -93,7 +93,7 @@ public class ClientController {
 		}
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/eliminar/{id}")
 	@Operation(summary = "Borrado Logico", description = "Elimina un Cliente existente según su ID.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "202", description = "Cliente eliminado exitosamente", content = @Content(schema = @Schema(implementation = CustomersModel.class))),
@@ -126,6 +126,22 @@ public class ClientController {
 		}
 	}
 
+
+
+	@PutMapping("/{id}")
+	@Operation(summary = "Actualizar un cliente", description = "Actualiza un cliente existente.")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Cliente actualizado exitosamente", content = @Content(schema = @Schema(implementation = CustomersModel.class))),
+			@ApiResponse(responseCode = "404", description = "Cliente no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
+	})
+	public ResponseEntity<CustomersModel> actualizarClient(@PathVariable int id, @RequestBody CustomersModel customersModel) {
+		CustomersModel actualizarCliente= clientService.actualizarClient(id, customersModel);
+		if (actualizarCliente != null) {
+			return ResponseEntity.ok(actualizarCliente);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 
 }
 

@@ -1,6 +1,7 @@
 package co.edu.unbosque.Rutila.Service;
 
 import co.edu.unbosque.Rutila.Model.DrinkModel;
+import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
 import co.edu.unbosque.Rutila.Model.OrderModel;
 import co.edu.unbosque.Rutila.Model.UserModel;
 import co.edu.unbosque.Rutila.Repository.BarRepository;
@@ -62,5 +63,15 @@ int id = userRepository.findByNameAndDeletedAtIsNull(name).getId();
 
         return orderRepository.findAllByDeletedAtIsNull();
     }
+
+    public OrderModel actualizarOrder(int id, OrderModel orderModel) {
+        if (orderRepository.existsById(id)) {
+            orderModel.setId(id);
+            return orderRepository.save(orderModel);
+        } else {
+            return null;
+        }
+    }
+
 
 }

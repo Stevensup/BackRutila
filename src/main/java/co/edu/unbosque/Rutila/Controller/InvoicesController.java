@@ -1,5 +1,6 @@
 package co.edu.unbosque.Rutila.Controller;
 
+import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.CustomersModel;
 import co.edu.unbosque.Rutila.Model.DrinkModel;
 import co.edu.unbosque.Rutila.Model.InvoiceModel;
@@ -47,13 +48,13 @@ public class InvoicesController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/eliminar/{id}")
     @Operation(summary = "Borrado Logico", description = "Elimina un Factura existente según su ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Factura eliminado exitosamente", content = @Content(schema = @Schema(implementation = InvoiceModel.class))),
             @ApiResponse(responseCode = "404", description = "Factura no encontrado")
     })
-    public ResponseEntity<InvoiceModel> eliminadoLogicoDrink(@PathVariable int id) {
+    public ResponseEntity<InvoiceModel> eliminadoLogicoInvoice(@PathVariable int id) {
         InvoiceModel actualizadoInvoice;
         LocalDateTime now = LocalDateTime.now();
         Timestamp deletedTimestamp = Timestamp.valueOf(now);
@@ -95,4 +96,23 @@ public class InvoicesController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar una factura", description = "Actualiza una fatura  existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Factura actualizado exitosamente", content = @Content(schema = @Schema(implementation = InvoiceModel.class))),
+            @ApiResponse(responseCode = "404", description = "Factura no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<InvoiceModel> actualizarInvoice(@PathVariable int id, @RequestBody InvoiceModel invoiceModel) {
+        InvoiceModel actualizarInvoice = invoiceService.actualizarInvoice(id, invoiceModel);
+        if (actualizarInvoice != null) {
+            return ResponseEntity.ok(actualizarInvoice);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
+
 }

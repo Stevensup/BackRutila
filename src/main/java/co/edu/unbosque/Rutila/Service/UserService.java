@@ -72,4 +72,14 @@ private UserRepository userRepository;
         return userRepository.findAllByDeletedAtIsNull();
     }
 
+
+    public UserModel actualizarUser(int id, UserModel userModel) {
+        if (userRepository.existsById(id)) {
+            userModel.setId(id);
+            return userRepository.save(userModel);
+        } else {
+            return null;
+        }
+    }
+
 }

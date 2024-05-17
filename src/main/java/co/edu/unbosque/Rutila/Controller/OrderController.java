@@ -1,6 +1,7 @@
 package co.edu.unbosque.Rutila.Controller;
 
 
+import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.CustomersModel;
 import co.edu.unbosque.Rutila.Model.OrderModel;
 import co.edu.unbosque.Rutila.Service.BarService;
@@ -66,7 +67,7 @@ public class OrderController {
             @ApiResponse(responseCode = "202", description = "Orden eliminado exitosamente", content = @Content(schema = @Schema(implementation = OrderModel.class))),
             @ApiResponse(responseCode = "404", description = "Orden no encontrado")
     })
-    public ResponseEntity<OrderModel> eliminadoLogicoBar(@PathVariable int id) {
+    public ResponseEntity<OrderModel> eliminadoLogico(@PathVariable int id) {
         OrderModel actualizadoOrder;
         LocalDateTime now = LocalDateTime.now();
         Timestamp deletedTimestamp = Timestamp.valueOf(now);
@@ -127,7 +128,20 @@ public class OrderController {
 
 
 
-
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar una Orden", description = "Actualiza una Orden existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Orden actualizada exitosamente", content = @Content(schema = @Schema(implementation = OrderModel.class))),
+            @ApiResponse(responseCode = "404", description = "Orden no encontrada", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<OrderModel> actualizarOrden(@PathVariable int id, @RequestBody OrderModel orderModel) {
+        OrderModel actualizarOrden = orderService.actualizarOrder(id, orderModel);
+        if (actualizarOrden != null) {
+            return ResponseEntity.ok(actualizarOrden);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
 
 

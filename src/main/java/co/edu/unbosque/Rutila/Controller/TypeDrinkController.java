@@ -2,6 +2,7 @@ package co.edu.unbosque.Rutila.Controller;
 
 import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.InvoiceModel;
+import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
 import co.edu.unbosque.Rutila.Model.TypeDrinkModel;
 import co.edu.unbosque.Rutila.Service.TypeDrinkService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -86,7 +87,20 @@ private TypeDrinkService typeDrinkService;
         }
     }
 
-
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar los  tipos de bebida", description = "Actualiza los ordenes de bebida existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Detalle de orden actualizado exitosamente", content = @Content(schema = @Schema(implementation = TypeDrinkModel.class))),
+            @ApiResponse(responseCode = "404", description = "Detalle de orden  no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<TypeDrinkModel> actualizarDetails(@PathVariable int id, @RequestBody TypeDrinkModel typeDrinkModel) {
+        TypeDrinkModel actualizarTipoBebida = typeDrinkService.actualizarType(id, typeDrinkModel);
+        if (actualizarTipoBebida != null) {
+            return ResponseEntity.ok(actualizarTipoBebida);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
 
 }

@@ -8,15 +8,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Transactional
 @RestController
@@ -27,17 +25,17 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    UserController userController;
 
 
+    /**
+     * @
+     * @return ResponseEntity<String>
+     */
 
-
-
-    @PostMapping("/autenticar")
-    @Operation(summary = "Autenticar un usuario", description = "Autentica a un usuario.")
+    @PostMapping
+    @Operation(summary = "Autenticar un cliente", description = "Autentica a un cliente.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuario autenticado exitosamente"),
+            @ApiResponse(responseCode = "200", description = "Cliente autenticado exitosamente"),
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "412", description = "Error de precondición")
     })
@@ -45,17 +43,23 @@ public class AuthController {
         String email = userLoginRequest.getEmail();
         String userPassword = userLoginRequest.getUserPassword();
 
-        // Autenticar al usuario
-        UserModel authenticatedUser = userService.authenticationUser(email, userPassword);
+        UserModel userModel = userService.authenticationUser(email,userPassword);
 
-        if (authenticatedUser != null) {
-            // Si el usuario se autentica exitosamente, devolver un código 200 con un mensaje de éxito
-            return ResponseEntity.ok("Usuario autenticado exitosamente");
+        if (userModel != null ) {
+            // Restablecer el contador de intentos fallidos si la autenticación es exitosa
+
+            int clienteId = userModel.getId();
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("{\"message\":\"Sesión iniciada\",\"correo\":\"" + email + "\",\"id\":" + clienteId + "}");
+
+
         } else {
-            // Si las credenciales son inválidas, devolver un código 401 con un mensaje de error
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña inválida");
+            }
         }
     }
 
 
-}
+

@@ -116,6 +116,22 @@ public class BarController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar un bar", description = "Actualiza un bar existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bar actualizado exitosamente", content = @Content(schema = @Schema(implementation = BarModel.class))),
+            @ApiResponse(responseCode = "404", description = "Bar no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<BarModel> actualizarBar(@PathVariable int id, @RequestBody BarModel barModel) {
+        BarModel actualizarBar = barService.actualizarBar(id, barModel);
+        if (actualizarBar != null) {
+            return ResponseEntity.ok(actualizarBar);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
     }
 
 

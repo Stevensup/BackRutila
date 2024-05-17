@@ -1,7 +1,9 @@
 package co.edu.unbosque.Rutila.Service;
 
+import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.DrinkModel;
 import co.edu.unbosque.Rutila.Model.InvoiceModel;
+import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
 import co.edu.unbosque.Rutila.Repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,5 +59,18 @@ public class InvoiceService {
         public List<InvoiceModel> findAll(){
         return invoiceRepository.findAllByDeletedAtIsNull();
         }
+
+
+    public InvoiceModel actualizarInvoice(int id, InvoiceModel invoiceModel) {
+        if (invoiceRepository.existsById(id)) {
+            invoiceModel.setId(id);
+            return invoiceRepository.save(invoiceModel);
+        } else {
+            return null;
+        }
+    }
+
+
+
 
 }

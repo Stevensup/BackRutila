@@ -1,6 +1,7 @@
 package co.edu.unbosque.Rutila.Controller;
 
 import co.edu.unbosque.Rutila.Model.BarModel;
+import co.edu.unbosque.Rutila.Model.CustomersModel;
 import co.edu.unbosque.Rutila.Model.DrinkModel;
 import co.edu.unbosque.Rutila.Model.TypeDrinkModel;
 import co.edu.unbosque.Rutila.Service.DrinkService;
@@ -102,7 +103,7 @@ private TypeDrinkService TypedrinkService;
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/eliminar/{id}")
     @Operation(summary = "Borrado Logico", description = "Elimina una bebida existente según su ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "bebida eliminada exitosamente", content = @Content(schema = @Schema(implementation = DrinkModel.class))),
@@ -153,6 +154,21 @@ private TypeDrinkService TypedrinkService;
             return ResponseEntity.ok(drink);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar una bebida", description = "Actualiza una bebida existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Bebida actualizado exitosamente", content = @Content(schema = @Schema(implementation = DrinkModel.class))),
+            @ApiResponse(responseCode = "404", description = "Bebida no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<DrinkModel> actualizarDrink(@PathVariable int id, @RequestBody DrinkModel drinkModel) {
+        DrinkModel actualizarDrink= drinkService.actualizarDrinks(id, drinkModel);
+        if (actualizarDrink != null) {
+            return ResponseEntity.ok(actualizarDrink);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }

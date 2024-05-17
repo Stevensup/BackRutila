@@ -1,6 +1,7 @@
 package co.edu.unbosque.Rutila.Service;
 
 import co.edu.unbosque.Rutila.Model.DrinkModel;
+import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
 import co.edu.unbosque.Rutila.Model.OrderModel;
 import co.edu.unbosque.Rutila.Model.TypeDrinkModel;
 import co.edu.unbosque.Rutila.Repository.TypeDrinkRepository;
@@ -52,4 +53,12 @@ public class TypeDrinkService {
         return typeDrinkRepository.findAllByDeletedAtIsNull();
     }
 
+    public TypeDrinkModel actualizarType(int id, TypeDrinkModel typeDrinkModel) {
+        if (typeDrinkRepository.existsById(id)) {
+            typeDrinkModel.setId(id);
+            return typeDrinkRepository.save(typeDrinkModel);
+        } else {
+            return null;
+        }
+    }
 }

@@ -93,7 +93,20 @@ public class DetailOrderController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualizar los  detalles de una orden", description = "Actualiza los detalles de una orden existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Detalle de orden actualizado exitosamente", content = @Content(schema = @Schema(implementation = OrderDetailsModel.class))),
+            @ApiResponse(responseCode = "404", description = "Detalle de orden  no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    public ResponseEntity<OrderDetailsModel> actualizarDetails(@PathVariable int id, @RequestBody OrderDetailsModel orderDetailsModel) {
+        OrderDetailsModel actualizarDetalles = orderDetailsService.actualizarDetails(id, orderDetailsModel);
+        if (actualizarDetalles != null) {
+            return ResponseEntity.ok(actualizarDetalles);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
 
 }

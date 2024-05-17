@@ -44,4 +44,13 @@ public class OrderDetailsService {
      public List<OrderDetailsModel> findALl (){
    return orderDetailsRepository.findAllByDeletedAtIsNull();
 }
+
+    public OrderDetailsModel actualizarDetails(int id, OrderDetailsModel orderDetailsModel) {
+        if (orderDetailsRepository.existsById(id)) {
+            orderDetailsModel.setId(id);
+            return orderDetailsRepository.save(orderDetailsModel);
+        } else {
+            return null;
+        }
+    }
 }
