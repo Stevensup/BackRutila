@@ -128,7 +128,7 @@ public class ClientController {
 
 
 
-	@PutMapping("/{id}")
+	@PutMapping("/actualizar/{id}")
 	@Operation(summary = "Actualizar un cliente", description = "Actualiza un cliente existente.")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Cliente actualizado exitosamente", content = @Content(schema = @Schema(implementation = CustomersModel.class))),

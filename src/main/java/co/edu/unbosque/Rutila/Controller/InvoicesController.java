@@ -98,7 +98,7 @@ public class InvoicesController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     @Operation(summary = "Actualizar una factura", description = "Actualiza una fatura  existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Factura actualizado exitosamente", content = @Content(schema = @Schema(implementation = InvoiceModel.class))),

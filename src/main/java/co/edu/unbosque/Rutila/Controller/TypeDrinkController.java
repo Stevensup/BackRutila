@@ -31,7 +31,7 @@ public class TypeDrinkController {
 private TypeDrinkService typeDrinkService;
 
 
-    @PostMapping("/guardartipobebida")
+    @PostMapping("/registrar")
     @Operation(summary = "Agregar tipo de bebidas", description = "Agrega el objeto typedrink")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "TypeDrink guardado con éxito"),
@@ -87,7 +87,7 @@ private TypeDrinkService typeDrinkService;
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     @Operation(summary = "Actualizar los  tipos de bebida", description = "Actualiza los ordenes de bebida existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Detalle de orden actualizado exitosamente", content = @Content(schema = @Schema(implementation = TypeDrinkModel.class))),

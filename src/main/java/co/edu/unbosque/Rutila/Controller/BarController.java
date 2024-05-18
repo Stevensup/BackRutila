@@ -29,7 +29,7 @@ public class BarController {
 
 
 
-    @PostMapping("/guardarbar")
+    @PostMapping("/registrar")
     @Operation(summary = "Agregar bares", description = "Agrega el objeto pubs")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bar guardado con éxito"),
@@ -118,7 +118,7 @@ public class BarController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     @Operation(summary = "Actualizar un bar", description = "Actualiza un bar existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bar actualizado exitosamente", content = @Content(schema = @Schema(implementation = BarModel.class))),

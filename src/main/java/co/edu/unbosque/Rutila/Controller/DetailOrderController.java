@@ -36,7 +36,7 @@ public class DetailOrderController {
     private DrinkService drinkService;
 
 
-    @PostMapping("/guardardetalles")
+    @PostMapping("/registrar")
     @Operation(summary = "Agregar Detalle de ordenes", description = "Agrega Detalle de ordenes")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Detalle de ordenes guardado con éxito"),
@@ -93,7 +93,7 @@ public class DetailOrderController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     @Operation(summary = "Actualizar los  detalles de una orden", description = "Actualiza los detalles de una orden existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Detalle de orden actualizado exitosamente", content = @Content(schema = @Schema(implementation = OrderDetailsModel.class))),

@@ -56,7 +56,18 @@ private UserRepository userRepository;
         }
         return null;
     }
+    public UserModel passwordUpdate(int id ,String password){
+        Optional<UserModel> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            UserModel user = optionalUser.get();
+            user.setHash_password(password);
+            return userRepository.save(user);
+        } else {
+            return null;
+        }
 
+
+    }
 
     public UserModel searchByname(String name){
 

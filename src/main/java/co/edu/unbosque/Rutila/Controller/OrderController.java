@@ -81,7 +81,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("Nombre-bar/{name}")
+    @GetMapping("/buscar/nombre-bar/{name}")
     @Operation(summary = "Obtener ordenes por su nombre de bar", description = "Obtener las ordenes por nombre de abr")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Orden encontrado"),
@@ -96,7 +96,7 @@ public class OrderController {
         }
     }
 
-    @GetMapping("Nombre-usuario/{name}")
+    @GetMapping("/buscar/nombre-usuario/{name}")
     @Operation(summary = "Obtener ordenes por su nombre de usuario", description = "Obtener las ordenes por nombre de usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Orden encontrado"),
@@ -128,7 +128,7 @@ public class OrderController {
 
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     @Operation(summary = "Actualizar una Orden", description = "Actualiza una Orden existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Orden actualizada exitosamente", content = @Content(schema = @Schema(implementation = OrderModel.class))),

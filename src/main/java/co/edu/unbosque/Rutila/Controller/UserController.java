@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UserController {
     private UserService userService;
 
 
-    @PostMapping("/guardarUser")
+    @PostMapping("/registrar")
     @Operation(summary = "Agregar Usuarios", description = "Agrega el objeto users")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario guardado con éxito"),
@@ -88,7 +89,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     @Operation(summary = "Actualizar un usuario", description = "Actualiza un usuario existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario actualizado exitosamente", content = @Content(schema = @Schema(implementation = UserModel.class))),
@@ -100,6 +101,24 @@ public class UserController {
             return ResponseEntity.ok(actualizarUser);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
+    @PutMapping("/actualizar/clave/{id}/{password}")
+    @Operation(summary = "Actualizar clave", description = "Actualiza la clave un usuario según su ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Clave actualizada exitosamente", content = @Content(schema = @Schema(implementation = UserModel.class))),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    public ResponseEntity<UserModel> actualizarClave(@PathVariable int id ,@PathVariable String password) {
+
+
+    UserModel user= userService.passwordUpdate(id,password);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 

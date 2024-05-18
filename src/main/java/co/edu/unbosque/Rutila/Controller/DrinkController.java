@@ -157,7 +157,7 @@ private TypeDrinkService TypedrinkService;
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     @Operation(summary = "Actualizar una bebida", description = "Actualiza una bebida existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bebida actualizado exitosamente", content = @Content(schema = @Schema(implementation = DrinkModel.class))),
