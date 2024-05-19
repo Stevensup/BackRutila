@@ -1,8 +1,8 @@
 package co.edu.unbosque.Rutila.Controller;
 
 
-import co.edu.unbosque.Rutila.Model.BarModel;
-import co.edu.unbosque.Rutila.Model.InvoiceModel;
+
+
 import co.edu.unbosque.Rutila.Model.UserModel;
 import co.edu.unbosque.Rutila.Service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,11 +10,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +39,7 @@ public class UserController {
     })
     public ResponseEntity<String> guardarUsuario(@RequestBody UserModel user) {
         try {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-          user.setHash_password(passwordEncoder.encode(user.getHash_password()));
+
             user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             userService.saveUser(user);
             return ResponseEntity.ok("Usuario guardado con éxito");

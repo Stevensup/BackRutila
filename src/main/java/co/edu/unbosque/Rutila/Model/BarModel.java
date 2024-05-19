@@ -4,13 +4,10 @@ package co.edu.unbosque.Rutila.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
-import java.sql.Time;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import java.sql.Timestamp;
-import java.time.LocalTime;
-import java.util.Date;
 import jakarta.validation.constraints.Pattern;
 
 

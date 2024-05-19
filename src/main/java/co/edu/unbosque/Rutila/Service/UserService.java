@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -17,6 +19,11 @@ public class UserService {
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
 private UserRepository userRepository;
+
+
+    private Map<String, Integer> failedLoginAttempts = new HashMap<>();
+    private Map<String, Boolean> blockedAccounts = new HashMap<>();
+    private static final int MAX_FAILED_ATTEMPTS = 3;
 
 
     public UserModel saveUser(UserModel user){
@@ -69,6 +76,8 @@ private UserRepository userRepository;
 
     }
 
+
+
     public UserModel searchByname(String name){
 
         return userRepository.findByNameAndDeletedAtIsNull(name);
@@ -91,6 +100,24 @@ private UserRepository userRepository;
         } else {
             return null;
         }
+    }
+
+
+    public boolean isAccountBlocked(String email) {
+        return blockedAccounts.getOrDefault(email, false);
+    }
+
+    public void incrementFailedAttempts(String email) {
+        int attempts = failedLoginAttempts.getOrDefault(email, 0) + 1;
+        failedLoginAttempts.put(email, attempts);
+        if (attempts >= MAX_FAILED_ATTEMPTS) {
+            blockedAccounts.put(email, true);
+        }
+    }
+
+    public void resetFailedAttempts(String email) {
+        failedLoginAttempts.remove(email);
+        blockedAccounts.remove(email);
     }
 
 }

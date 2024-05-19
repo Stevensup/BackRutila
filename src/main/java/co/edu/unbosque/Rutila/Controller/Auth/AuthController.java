@@ -1,18 +1,15 @@
 package co.edu.unbosque.Rutila.Controller.Auth;
 
 
-import co.edu.unbosque.Rutila.Controller.UserController;
+
 import co.edu.unbosque.Rutila.Model.UserModel;
 import co.edu.unbosque.Rutila.Service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,40 +23,57 @@ public class AuthController {
     private UserService userService;
 
 
-
     /**
-     * @
      * @return ResponseEntity<String>
+     * @
      */
 
-    @PostMapping
+    @GetMapping
     @Operation(summary = "Autenticar un cliente", description = "Autentica a un cliente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cliente autenticado exitosamente"),
             @ApiResponse(responseCode = "401", description = "No autorizado"),
             @ApiResponse(responseCode = "412", description = "Error de precondición")
     })
-    public ResponseEntity<String> autenticarCliente(@RequestBody UserLoginRequest userLoginRequest) {
-        String email = userLoginRequest.getEmail();
-        String userPassword = userLoginRequest.getUserPassword();
-
-        UserModel userModel = userService.authenticationUser(email,userPassword);
-
-        if (userModel != null ) {
-            // Restablecer el contador de intentos fallidos si la autenticación es exitosa
-
-            int clienteId = userModel.getId();
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body("{\"message\":\"Sesión iniciada\",\"correo\":\"" + email + "\",\"id\":" + clienteId + "}");
-
-
-        } else {
-
-
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña inválida");
+    public ResponseEntity<String> autenticarCliente(@RequestParam String email, @RequestParam String userPassword) {
+        try {
+            // Validar la solicitud de inicio de sesión
+            if (email == null || email.isEmpty() || userPassword == null || userPassword.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED)
+                        .body("{\"message\":\"Campos de correo electrónico y contraseña son obligatorios\"}");
             }
+
+            // Realizar la autenticación del usuario
+            UserModel userModel = userService.authenticationUser(email,userPassword);
+
+            if (userModel != null) {
+                // Restablecer el contador de intentos fallidos si la autenticación es exitosa
+                userService.resetFailedAttempts(email);
+
+                int clienteId = userModel.getId();
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body("{\"message\":\"Sesión iniciada\",\"correo\":\"" + email + "\",\"estado\":\"autenticado\"}");
+            } else {
+
+                userService.incrementFailedAttempts(email);
+                if (userService.isAccountBlocked(email)) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .body("{\"message\":\"La cuenta está bloqueada\",\"estado\":\"bloqueado\"}");
+                } else {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .body("{\"message\":\"Usuario o contraseña inválida\",\"estado\":\"fallido\"}");
+                }
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"message\":\"Ocurrió un error inesperado\"}");
         }
     }
+
+
+
+}
+
 
 
 

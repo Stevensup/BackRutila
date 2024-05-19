@@ -1,9 +1,6 @@
 package co.edu.unbosque.Rutila.Controller;
 
-import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
-import co.edu.unbosque.Rutila.Model.TypeDrinkModel;
-import co.edu.unbosque.Rutila.Service.ClientService;
 import co.edu.unbosque.Rutila.Service.DrinkService;
 import co.edu.unbosque.Rutila.Service.OrderDetailsService;
 import io.swagger.v3.oas.annotations.Operation;
