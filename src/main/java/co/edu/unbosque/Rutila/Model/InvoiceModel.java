@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @Table(name = "invoices")
 public class InvoiceModel {
-    @JsonIgnore
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
