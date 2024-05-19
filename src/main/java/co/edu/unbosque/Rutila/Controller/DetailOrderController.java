@@ -42,8 +42,7 @@ public class DetailOrderController {
     public ResponseEntity<String> guardarDetalleOrdenes(@RequestBody OrderDetailsModel order) {
         try{
             order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-            int id = drinkService.searchByName(order.getNombrebebida()).getId();
-            order.setId_drink(id);
+
            orderDetailsService.saveOrderDetail(order);
             return ResponseEntity.ok("Detalle de orden guardado con éxito");
         }catch (Exception e){

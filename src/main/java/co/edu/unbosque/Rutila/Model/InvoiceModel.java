@@ -34,8 +34,8 @@ public class InvoiceModel {
     @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
 
-    private int id_order;
-
+   @JsonIgnore
+  private int id_order;
 
     @Override
     public String toString() {

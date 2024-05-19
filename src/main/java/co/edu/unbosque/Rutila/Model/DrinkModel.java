@@ -39,5 +39,8 @@ public class DrinkModel {
     @Column(name = "id_type")
     private int  idtype;
 
+    @Transient
+    private String tipo;
+
 
 }

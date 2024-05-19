@@ -21,8 +21,7 @@ public class OrderDetailsModel {
     private int id;
     private int amount;
 
-    @Transient
-    private String nombrebebida;
+
     @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
@@ -32,11 +31,11 @@ public class OrderDetailsModel {
     @JsonIgnore
     @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
-
+    private int id_drink;
+    @JsonIgnore
     private int id_order;
 
 
-    private int id_drink;
 
     @Override
     public String toString() {

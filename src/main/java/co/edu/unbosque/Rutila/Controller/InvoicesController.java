@@ -1,10 +1,8 @@
 package co.edu.unbosque.Rutila.Controller;
 
-import co.edu.unbosque.Rutila.Model.BarModel;
-import co.edu.unbosque.Rutila.Model.CustomersModel;
-import co.edu.unbosque.Rutila.Model.DrinkModel;
-import co.edu.unbosque.Rutila.Model.InvoiceModel;
+import co.edu.unbosque.Rutila.Model.*;
 import co.edu.unbosque.Rutila.Service.InvoiceService;
+import co.edu.unbosque.Rutila.Service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,16 +27,18 @@ public class InvoicesController {
     @Autowired
     private InvoiceService invoiceService;
 
+    @Autowired
+    private OrderService orderService;
+
     @PostMapping("/registrar")
     @Operation(summary = "Crear factura", description = "crea una factura de acuerdo a un cuerpo de json.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación exitosa", content = @Content(array = @ArraySchema(schema = @Schema(implementation = InvoicesController.class))))
     })
-    public ResponseEntity<String> crearFactura(@RequestBody InvoiceModel invoice) {
+    public ResponseEntity<String> crearFactura(@RequestBody OrderOperationRequest request) {
         try {
 
-            invoice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-            InvoiceModel nuevoInvoice = invoiceService.saveInvoice(invoice);
+            orderService.createOrder(request.getOrder(), request.getOrderDetail(), request.getInvoice());
             return ResponseEntity.ok("Se inserto la factura");
         } catch (Exception e) {
             e.printStackTrace();

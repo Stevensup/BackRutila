@@ -1,12 +1,7 @@
 package co.edu.unbosque.Rutila.Service;
 
-import co.edu.unbosque.Rutila.Model.DrinkModel;
-import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
-import co.edu.unbosque.Rutila.Model.OrderModel;
-import co.edu.unbosque.Rutila.Model.UserModel;
-import co.edu.unbosque.Rutila.Repository.BarRepository;
-import co.edu.unbosque.Rutila.Repository.OrderRepository;
-import co.edu.unbosque.Rutila.Repository.UserRepository;
+import co.edu.unbosque.Rutila.Model.*;
+import co.edu.unbosque.Rutila.Repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +20,12 @@ public class OrderService {
     private BarRepository barRepository;
     private UserRepository userRepository;
 
+    @Autowired
+    OrderDetailsRepository orderDetailsRepository;
+
+    @Autowired
+    InvoiceRepository invoiceRepository;
+
 
     @Transactional
     public OrderModel saveOrder(OrderModel order){
@@ -32,6 +33,21 @@ public class OrderService {
         OrderModel orderModel= orderRepository.save(order);
         logger.info("El metodo guardo exitosamente");
         return orderModel;
+    }
+
+
+    public void createOrder(OrderModel order, OrderDetailsModel orderDetail, InvoiceModel invoice) {
+        order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        orderRepository.save(order);
+
+        // Asignar la orden al detalle de la orden
+        orderDetail.setId_order(order.getId());
+        orderDetail .setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        orderDetailsRepository.save(orderDetail);
+
+        invoice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        invoice.setId_order(order.getId());
+        invoiceRepository.save(invoice);
     }
 
     public OrderModel eliminadoLogico(int id, Timestamp deleted) {

@@ -2,6 +2,7 @@ package co.edu.unbosque.Rutila.Service;
 
 import co.edu.unbosque.Rutila.Model.CustomersModel;
 import co.edu.unbosque.Rutila.Model.DrinkModel;
+import co.edu.unbosque.Rutila.Model.TypeDrinkModel;
 import co.edu.unbosque.Rutila.Repository.DrinkRepository;
 import co.edu.unbosque.Rutila.Repository.TypeDrinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class DrinkService {
     private DrinkRepository drinkRepository;
     @Autowired
     private TypeDrinkRepository typeDrinkRepository;
+
+
+
 
     @Transactional
     public DrinkModel saveDrink(DrinkModel drink){
@@ -81,8 +85,14 @@ public class DrinkService {
     }
 
 
-    public List<DrinkModel> findAll (){
-        return drinkRepository.findAllByDeletedAtIsNull();
+    public List<DrinkModel> findAll() {
+        List<DrinkModel> drinks = drinkRepository.findAllByDeletedAtIsNull();
+        for (DrinkModel drink : drinks) {
+        String type=  typeDrinkRepository.findByIdAndDeletedAtIsNull(drink.getIdtype()).getTypes();
+
+            drink.setTipo(type);
+        }
+        return drinks;
     }
 
     public DrinkModel actualizarDrinks(int id, DrinkModel drinkModel) {
