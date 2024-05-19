@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
 
 
     /**
@@ -43,26 +45,34 @@ public class AuthController {
                         .body("{\"message\":\"Campos de correo electrónico y contraseña son obligatorios\"}");
             }
 
-            // Realizar la autenticación del usuario
-            UserModel userModel = userService.authenticationUser(email,userPassword);
+            // Obtener el usuario por email
+            UserModel userModel = userService.searchByemail(email);
+
 
             if (userModel != null) {
-                // Restablecer el contador de intentos fallidos si la autenticación es exitosa
-                userService.resetFailedAttempts(email);
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
-                int clienteId = userModel.getId();
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body("{\"message\":\"Sesión iniciada\",\"correo\":\"" + email + "\",\"estado\":\"autenticado\"}");
-            } else {
+                String storedHashedPassword = userModel.getHash_password();
+                if (passwordEncoder.matches(userPassword, storedHashedPassword)) {
+                    // Restablecer el contador de intentos fallidos si la autenticación es exitosa
+                    userService.resetFailedAttempts(email);
 
-                userService.incrementFailedAttempts(email);
-                if (userService.isAccountBlocked(email)) {
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                            .body("{\"message\":\"La cuenta está bloqueada\",\"estado\":\"bloqueado\"}");
+                    int clienteId = userModel.getId();
+                    return ResponseEntity.status(HttpStatus.OK)
+                            .body("{\"message\":\"Sesión iniciada\",\"correo\":\"" + email + "\",\"estado\":\"autenticado\"}");
                 } else {
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                            .body("{\"message\":\"Usuario o contraseña inválida\",\"estado\":\"fallido\"}");
+                    userService.incrementFailedAttempts(email);
+                    if (userService.isAccountBlocked(email)) {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                .body("{\"message\":\"La cuenta está bloqueada\",\"estado\":\"bloqueado\"}");
+                    } else {
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                .body("{\"message\":\"Usuario o contraseña inválida\",\"estado\":\"fallido\"}");
+                    }
                 }
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("{\"message\":\"Usuario no encontrado\",\"estado\":\"fallido\"}");
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
