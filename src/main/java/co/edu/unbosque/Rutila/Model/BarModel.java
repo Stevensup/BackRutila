@@ -20,7 +20,7 @@ import jakarta.validation.constraints.Pattern;
 @Setter
 @Table(name = "pubs")
 public class BarModel {
-
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
