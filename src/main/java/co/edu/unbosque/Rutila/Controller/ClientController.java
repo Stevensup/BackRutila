@@ -135,6 +135,7 @@ public class ClientController {
 			@ApiResponse(responseCode = "404", description = "Cliente no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
 	})
 	public ResponseEntity<CustomersModel> actualizarClient(@PathVariable int id, @RequestBody CustomersModel customersModel) {
+		customersModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		CustomersModel actualizarCliente= clientService.actualizarClient(id, customersModel);
 		if (actualizarCliente != null) {
 			return ResponseEntity.ok(actualizarCliente);

@@ -105,6 +105,8 @@ public class InvoicesController {
             @ApiResponse(responseCode = "404", description = "Factura no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<InvoiceModel> actualizarInvoice(@PathVariable int id, @RequestBody InvoiceModel invoiceModel) {
+
+        invoiceModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         InvoiceModel actualizarInvoice = invoiceService.actualizarInvoice(id, invoiceModel);
         if (actualizarInvoice != null) {
             return ResponseEntity.ok(actualizarInvoice);

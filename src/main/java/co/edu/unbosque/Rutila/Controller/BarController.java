@@ -125,6 +125,7 @@ public class BarController {
             @ApiResponse(responseCode = "404", description = "Bar no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<BarModel> actualizarBar(@PathVariable int id, @RequestBody BarModel barModel) {
+        barModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         BarModel actualizarBar = barService.actualizarBar(id, barModel);
         if (actualizarBar != null) {
             return ResponseEntity.ok(actualizarBar);

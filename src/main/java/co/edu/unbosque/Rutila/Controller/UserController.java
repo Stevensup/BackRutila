@@ -93,6 +93,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<UserModel> actualizarUser(@PathVariable int id, @RequestBody UserModel userModel) {
+        userModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         UserModel actualizarUser = userService.actualizarUser(id, userModel);
         if (actualizarUser != null) {
             return ResponseEntity.ok(actualizarUser);
@@ -112,6 +113,7 @@ public class UserController {
 
 
     UserModel user= userService.passwordUpdate(id,password);
+    user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {

@@ -164,6 +164,7 @@ private TypeDrinkService TypedrinkService;
             @ApiResponse(responseCode = "404", description = "Bebida no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<DrinkModel> actualizarDrink(@PathVariable int id, @RequestBody DrinkModel drinkModel) {
+        drinkModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         DrinkModel actualizarDrink= drinkService.actualizarDrinks(id, drinkModel);
         if (actualizarDrink != null) {
             return ResponseEntity.ok(actualizarDrink);

@@ -135,6 +135,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "Orden no encontrada", content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<OrderModel> actualizarOrden(@PathVariable int id, @RequestBody OrderModel orderModel) {
+        orderModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         OrderModel actualizarOrden = orderService.actualizarOrder(id, orderModel);
         if (actualizarOrden != null) {
             return ResponseEntity.ok(actualizarOrden);

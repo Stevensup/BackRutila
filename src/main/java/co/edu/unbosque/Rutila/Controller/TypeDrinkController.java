@@ -94,6 +94,7 @@ private TypeDrinkService typeDrinkService;
             @ApiResponse(responseCode = "404", description = "Detalle de orden  no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
     public ResponseEntity<TypeDrinkModel> actualizarDetails(@PathVariable int id, @RequestBody TypeDrinkModel typeDrinkModel) {
+        typeDrinkModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         TypeDrinkModel actualizarTipoBebida = typeDrinkService.actualizarType(id, typeDrinkModel);
         if (actualizarTipoBebida != null) {
             return ResponseEntity.ok(actualizarTipoBebida);
