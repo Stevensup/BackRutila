@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Table(name = "drink_types")
 public class TypeDrinkModel {
-    @JsonIgnore
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
