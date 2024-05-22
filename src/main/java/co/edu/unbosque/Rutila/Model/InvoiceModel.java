@@ -34,8 +34,9 @@ public class InvoiceModel {
     @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
 
-   @JsonIgnore
-  private int id_order;
+    @OneToOne
+    @JoinColumn(name = "id_order", nullable = false)
+    private OrderModel order;
 
     @Override
     public String toString() {
@@ -46,7 +47,7 @@ public class InvoiceModel {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
-                ", orders=" +id_order+
+                ", orders=" +order+
                 '}';
     }
 }

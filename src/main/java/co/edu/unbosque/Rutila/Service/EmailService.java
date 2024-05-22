@@ -15,19 +15,13 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
     private final ObjectMapper objectMapper;
 
-    /**
-     * @param javaMailSender
-     * @param objectMapper
-     * @return
-     */
+
     public EmailService(JavaMailSender javaMailSender, ObjectMapper objectMapper) {
         this.javaMailSender = javaMailSender;
         this.objectMapper = objectMapper;
     }
 
-    /**
-     * @param json
-     */
+
     public void enviarCorreo(String json) {
         try {
             JsonNode jsonNode = objectMapper.readTree(json);

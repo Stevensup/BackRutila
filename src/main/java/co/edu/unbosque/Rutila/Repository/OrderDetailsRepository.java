@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface OrderDetailsRepository extends JpaRepository<OrderDetailsModel,Integer> {
     List<OrderDetailsModel> findAllByDeletedAtIsNull();
+
+
+    List<OrderDetailsModel> findByOrderId(int orderId);
 }

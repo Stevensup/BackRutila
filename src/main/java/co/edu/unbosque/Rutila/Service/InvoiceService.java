@@ -1,10 +1,8 @@
 package co.edu.unbosque.Rutila.Service;
 
-import co.edu.unbosque.Rutila.Model.BarModel;
-import co.edu.unbosque.Rutila.Model.DrinkModel;
-import co.edu.unbosque.Rutila.Model.InvoiceModel;
-import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
+import co.edu.unbosque.Rutila.Model.*;
 import co.edu.unbosque.Rutila.Repository.InvoiceRepository;
+import co.edu.unbosque.Rutila.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +20,18 @@ public class InvoiceService {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
 
     @Transactional
-    public InvoiceModel saveInvoice(InvoiceModel invoice){
-        logger.info("Entro al metodo de guardado de factura");
+    public InvoiceModel saveInvoice(InvoiceModel invoice, OrderModel orderModel){
+        orderModel.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        OrderModel savedOrder = orderRepository.save(orderModel);
+
+
+        invoice.setOrder(savedOrder);
+        invoice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         InvoiceModel invoiceModel = invoiceRepository.save(invoice);
         logger.info("Se guardo la factura");
         return invoiceModel;

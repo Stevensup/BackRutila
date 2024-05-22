@@ -35,10 +35,10 @@ public class InvoicesController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación exitosa", content = @Content(array = @ArraySchema(schema = @Schema(implementation = InvoicesController.class))))
     })
-    public ResponseEntity<String> crearFactura(@RequestBody OrderOperationRequest request) {
+    public ResponseEntity<String> crearFactura(@RequestBody InvoiceModel invoiceModel) {
         try {
+              invoiceService.saveInvoice(invoiceModel,invoiceModel.getOrder());
 
-            orderService.createOrder(request.getOrder(), request.getOrderDetail(), request.getInvoice());
             return ResponseEntity.ok("Se inserto la factura");
         } catch (Exception e) {
             e.printStackTrace();

@@ -3,6 +3,7 @@ package co.edu.unbosque.Rutila.Controller;
 
 import co.edu.unbosque.Rutila.Model.BarModel;
 import co.edu.unbosque.Rutila.Model.CustomersModel;
+import co.edu.unbosque.Rutila.Model.InvoiceModel;
 import co.edu.unbosque.Rutila.Model.OrderModel;
 import co.edu.unbosque.Rutila.Service.BarService;
 import co.edu.unbosque.Rutila.Service.ClientService;

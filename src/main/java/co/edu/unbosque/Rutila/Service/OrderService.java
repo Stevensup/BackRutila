@@ -36,18 +36,25 @@ public class OrderService {
     }
 
 
-    public void createOrder(OrderModel order, OrderDetailsModel orderDetail, InvoiceModel invoice) {
-        order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        orderRepository.save(order);
+    @Transactional
+    public OrderModel createOrderWithInvoice(OrderModel order, InvoiceModel invoice) {
+        // Save the order first to get its ID
+        OrderModel savedOrder = orderRepository.save(order);
 
-        // Asignar la orden al detalle de la orden
-        orderDetail.setId_order(order.getId());
-        orderDetail .setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        orderDetailsRepository.save(orderDetail);
+        // Set the saved order to each order detail and save it
+        for (OrderDetailsModel orderDetail : order.getOrderDetails()) {
+            orderDetail.setOrder(savedOrder);
+            orderDetailsRepository.save(orderDetail);
+        }
 
-        invoice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        invoice.setId_order(order.getId());
+        // Set the saved order to the invoice and save it
+        invoice.setOrder(savedOrder);
         invoiceRepository.save(invoice);
+
+        // Set the invoice to the saved order
+        savedOrder.setInvoice(invoice);
+
+        return savedOrder;
     }
 
     public OrderModel eliminadoLogico(int id, Timestamp deleted) {

@@ -43,7 +43,7 @@ public class DetailOrderController {
         try{
             order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
-           orderDetailsService.saveOrderDetail(order);
+           orderDetailsService.saveOrderDetail(order,order.getOrder());
             return ResponseEntity.ok("Detalle de orden guardado con éxito");
         }catch (Exception e){
             e.printStackTrace();
@@ -53,6 +53,8 @@ public class DetailOrderController {
 
 
     }
+
+
 
 
 

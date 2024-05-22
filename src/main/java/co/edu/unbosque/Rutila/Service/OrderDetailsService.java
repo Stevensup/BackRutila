@@ -2,7 +2,9 @@ package co.edu.unbosque.Rutila.Service;
 
 import co.edu.unbosque.Rutila.Model.DrinkModel;
 import co.edu.unbosque.Rutila.Model.OrderDetailsModel;
+import co.edu.unbosque.Rutila.Model.OrderModel;
 import co.edu.unbosque.Rutila.Repository.OrderDetailsRepository;
+import co.edu.unbosque.Rutila.Repository.OrderRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,14 @@ public class OrderDetailsService {
     @Autowired
     private OrderDetailsRepository orderDetailsRepository;
 
-    public OrderDetailsModel saveOrderDetail (OrderDetailsModel orderDetail){
-        logger.info("Ingreso al metodo");
+    @Autowired
+    private OrderRepository orderRepository;
+
+    public OrderDetailsModel saveOrderDetail (OrderDetailsModel orderDetail, OrderModel order){
+        order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        OrderModel savedOrder = orderRepository.save(order);
+
+
         OrderDetailsModel orderDetailsModel = orderDetailsRepository.save(orderDetail);
         logger.info("Se guardo exitosamente");
         return orderDetailsModel;

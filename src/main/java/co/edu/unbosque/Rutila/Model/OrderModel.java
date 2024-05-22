@@ -50,6 +50,16 @@ public class OrderModel {
 
 
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<OrderDetailsModel> orderDetails;
+
+
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private InvoiceModel invoice;
+
 
 
 

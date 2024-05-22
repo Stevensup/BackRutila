@@ -32,9 +32,12 @@ public class OrderDetailsModel {
     @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
     private int id_drink;
-    @JsonIgnore
-    private int id_order;
 
+
+    @ManyToOne
+    @JoinColumn(name = "id_order", nullable = false)
+
+    private OrderModel order;
 
 
     @Override
