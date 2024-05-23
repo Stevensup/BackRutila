@@ -8,6 +8,9 @@ import lombok.Setter;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * Represents a type of drink in the system.
+ */
 @Data
 @Entity
 @Getter
@@ -18,19 +21,26 @@ public class TypeDrinkModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String types;
+
     @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
+
     @JsonIgnore
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
+
     @JsonIgnore
     @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
 
-
-
+    /**
+     * Returns a string representation of the TypeDrinkModel object.
+     *
+     * @return a string representation of the object.
+     */
     @Override
     public String toString() {
         return "TypeDrinkModel{" +

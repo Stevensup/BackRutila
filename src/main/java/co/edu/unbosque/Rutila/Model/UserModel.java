@@ -6,8 +6,13 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import java.sql.Timestamp;
-import java.util.List;
 
+/**
+ * The UserModel class represents a user in the system.
+ * It contains information such as the user's ID, name, email, phone number,
+ * role ID, password hash,
+ * creation timestamp, update timestamp, and deletion timestamp.
+ */
 @Data
 @Entity
 @Getter
@@ -39,7 +44,11 @@ public class UserModel {
     @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
 
-
+    /**
+     * Returns a string representation of the UserModel object.
+     *
+     * @return a string representation of the UserModel object.
+     */
     @Override
     public String toString() {
         return "UserModel{" +

@@ -37,16 +37,16 @@ public class InvoicesController {
     })
     public ResponseEntity<String> crearFactura(@RequestBody InvoiceModel invoiceModel) {
         try {
-              invoiceService.saveInvoice(invoiceModel,invoiceModel.getOrder());
+            invoiceService.saveInvoice(invoiceModel, invoiceModel.getOrder());
 
             return ResponseEntity.ok("Se inserto la factura");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("No se inserto la factura");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar la factura" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al guardar la factura" + e.getMessage());
         }
     }
-
 
     @PutMapping("/eliminar/{id}")
     @Operation(summary = "Borrado Logico", description = "Elimina un Factura existente según su ID.")
@@ -58,14 +58,13 @@ public class InvoicesController {
         InvoiceModel actualizadoInvoice;
         LocalDateTime now = LocalDateTime.now();
         Timestamp deletedTimestamp = Timestamp.valueOf(now);
-        actualizadoInvoice=  invoiceService.eliminadoLogico(id, deletedTimestamp );
+        actualizadoInvoice = invoiceService.eliminadoLogico(id, deletedTimestamp);
         if (actualizadoInvoice != null) {
             return ResponseEntity.ok(actualizadoInvoice);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
 
     @GetMapping("/fecha/{dates}")
     @Operation(summary = "Obtener Factura por su fecha", description = "Obtener los Facturas por sus fechas")
@@ -74,7 +73,7 @@ public class InvoicesController {
             @ApiResponse(responseCode = "404", description = "Facturas no encontrado")
     })
     public ResponseEntity<InvoiceModel> obtenerFacturasPorDates(@PathVariable String dates) {
-      InvoiceModel invoice = invoiceService.searchBydates(dates);
+        InvoiceModel invoice = invoiceService.searchBydates(dates);
         if (invoice != null) {
             return ResponseEntity.ok(invoice);
         } else {
@@ -89,7 +88,7 @@ public class InvoicesController {
             @ApiResponse(responseCode = "404", description = " factura no encontrados")
     })
     public ResponseEntity<List<InvoiceModel>> listarFacturas() {
-        List<InvoiceModel> invoice= invoiceService.findAll();
+        List<InvoiceModel> invoice = invoiceService.findAll();
         if (invoice != null) {
             return ResponseEntity.ok(invoice);
         } else {
@@ -97,14 +96,14 @@ public class InvoicesController {
         }
     }
 
-
     @PutMapping("/actualizar/{id}")
     @Operation(summary = "Actualizar una factura", description = "Actualiza una fatura  existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Factura actualizado exitosamente", content = @Content(schema = @Schema(implementation = InvoiceModel.class))),
             @ApiResponse(responseCode = "404", description = "Factura no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
-    public ResponseEntity<InvoiceModel> actualizarInvoice(@PathVariable int id, @RequestBody InvoiceModel invoiceModel) {
+    public ResponseEntity<InvoiceModel> actualizarInvoice(@PathVariable int id,
+            @RequestBody InvoiceModel invoiceModel) {
 
         invoiceModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         InvoiceModel actualizarInvoice = invoiceService.actualizarInvoice(id, invoiceModel);
@@ -114,7 +113,5 @@ public class InvoicesController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-
 
 }

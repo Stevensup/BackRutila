@@ -12,6 +12,11 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class represents the service layer for orders in the Rutila application.
+ * It provides methods to interact with the order repository and perform various
+ * operations on orders.
+ */
 @Service
 public class OrderService {
     private final Logger logger = LoggerFactory.getLogger(OrderService.class);
@@ -26,16 +31,28 @@ public class OrderService {
     @Autowired
     InvoiceRepository invoiceRepository;
 
-
+    /**
+     * Saves an order in the database.
+     * 
+     * @param order The order to be saved.
+     * @return The saved order.
+     */
     @Transactional
-    public OrderModel saveOrder(OrderModel order){
+    public OrderModel saveOrder(OrderModel order) {
         logger.info("Ingreso al metodo");
-        OrderModel orderModel= orderRepository.save(order);
+
+        OrderModel orderModel = orderRepository.save(order);
         logger.info("El metodo guardo exitosamente");
         return orderModel;
     }
 
-
+    /**
+     * Creates an order with an associated invoice.
+     * 
+     * @param order   The order to be created.
+     * @param invoice The invoice associated with the order.
+     * @return The created order.
+     */
     @Transactional
     public OrderModel createOrderWithInvoice(OrderModel order, InvoiceModel invoice) {
         // Save the order first to get its ID
@@ -57,6 +74,13 @@ public class OrderService {
         return savedOrder;
     }
 
+    /**
+     * Performs a logical deletion of an order by setting its deletedAt timestamp.
+     * 
+     * @param id      The ID of the order to be deleted.
+     * @param deleted The timestamp of the deletion.
+     * @return The updated order with the deletedAt timestamp set.
+     */
     public OrderModel eliminadoLogico(int id, Timestamp deleted) {
         Optional<OrderModel> optionalOrder = orderRepository.findById(id);
 
@@ -69,24 +93,44 @@ public class OrderService {
         }
     }
 
-
-    public List<OrderModel> searchByBarName(String name){
-       int id=  barRepository.findBynameAndDeletedAtIsNull(name).getId();
+    /**
+     * Searches for orders by the name of the bar.
+     * 
+     * @param name The name of the bar.
+     * @return A list of orders associated with the bar.
+     */
+    public List<OrderModel> searchByBarName(String name) {
+        int id = barRepository.findBynameAndDeletedAtIsNull(name).getId();
         return orderRepository.findByIdusersAndDeletedAtIsNull(id);
-
     }
 
-    public List<OrderModel> searchByUserName(String name){
-int id = userRepository.findByNameAndDeletedAtIsNull(name).getId();
+    /**
+     * Searches for orders by the name of the user.
+     * 
+     * @param name The name of the user.
+     * @return A list of orders associated with the user.
+     */
+    public List<OrderModel> searchByUserName(String name) {
+        int id = userRepository.findByNameAndDeletedAtIsNull(name).getId();
         return orderRepository.findByIdpubsAndDeletedAtIsNull(id);
     }
 
-
-    public List<OrderModel>  findAll (){
-
+    /**
+     * Retrieves all orders from the database.
+     * 
+     * @return A list of all orders.
+     */
+    public List<OrderModel> findAll() {
         return orderRepository.findAllByDeletedAtIsNull();
     }
 
+    /**
+     * Updates an existing order in the database.
+     * 
+     * @param id         The ID of the order to be updated.
+     * @param orderModel The updated order data.
+     * @return The updated order.
+     */
     public OrderModel actualizarOrder(int id, OrderModel orderModel) {
         if (orderRepository.existsById(id)) {
             orderModel.setId(id);
@@ -95,6 +139,4 @@ int id = userRepository.findByNameAndDeletedAtIsNull(name).getId();
             return null;
         }
     }
-
-
 }

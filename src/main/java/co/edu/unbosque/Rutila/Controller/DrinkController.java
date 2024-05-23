@@ -31,10 +31,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/drink")
 public class DrinkController {
-@Autowired
+    @Autowired
     private DrinkService drinkService;
     @Autowired
-private TypeDrinkService TypedrinkService;
+    private TypeDrinkService TypedrinkService;
 
     @PostMapping("/registrar")
     @Operation(summary = "Crear Bebida", description = "crea una bebida de acuerdo a un cuerpo de json.")
@@ -44,9 +44,7 @@ private TypeDrinkService TypedrinkService;
     public ResponseEntity<String> crearBebida(@RequestBody DrinkModel drink) {
         try {
 
-
             drink.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-
 
             DrinkModel nuevoDrink = drinkService.saveDrink(drink);
             return ResponseEntity.ok("Se insertó la bebida");
@@ -54,7 +52,8 @@ private TypeDrinkService TypedrinkService;
             // Manejar cualquier excepción que ocurra durante el proceso
             e.printStackTrace();
             System.out.println("No se insertó la bebida");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar la bebida: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al guardar la bebida: " + e.getMessage());
         }
     }
 
@@ -80,7 +79,7 @@ private TypeDrinkService TypedrinkService;
             @ApiResponse(responseCode = "404", description = "Bebidas no encontrado")
     })
     public ResponseEntity<List<DrinkModel>> obtenerBebidaPorTipo(@PathVariable String type) {
-      List <DrinkModel> drink = drinkService.searchByType(type);
+        List<DrinkModel> drink = drinkService.searchByType(type);
         if (drink != null) {
             return ResponseEntity.ok(drink);
         } else {
@@ -113,7 +112,7 @@ private TypeDrinkService TypedrinkService;
         DrinkModel actualizadoDrink;
         LocalDateTime now = LocalDateTime.now();
         Timestamp deletedTimestamp = Timestamp.valueOf(now);
-        actualizadoDrink= drinkService.eliminadoLogico(id, deletedTimestamp );
+        actualizadoDrink = drinkService.eliminadoLogico(id, deletedTimestamp);
 
         if (actualizadoDrink != null) {
             return ResponseEntity.ok(actualizadoDrink);
@@ -121,7 +120,6 @@ private TypeDrinkService TypedrinkService;
             return ResponseEntity.notFound().build();
         }
     }
-
 
     @PutMapping("/{name}/{availability}")
     @Operation(summary = "Agregar Inventario", description = "Agregar inventario de la bebida")
@@ -129,10 +127,10 @@ private TypeDrinkService TypedrinkService;
             @ApiResponse(responseCode = "202", description = "Agregado el inventario", content = @Content(schema = @Schema(implementation = DrinkModel.class))),
             @ApiResponse(responseCode = "404", description = "inventario  no agregado")
     })
-    public ResponseEntity<DrinkModel> agregarInventario(@PathVariable String name,int availability) {
+    public ResponseEntity<DrinkModel> agregarInventario(@PathVariable String name, int availability) {
         DrinkModel actualizadoDrink;
 
-        actualizadoDrink= drinkService.agregarInventario(name, availability);
+        actualizadoDrink = drinkService.agregarInventario(name, availability);
 
         if (actualizadoDrink != null) {
             return ResponseEntity.ok(actualizadoDrink);
@@ -140,7 +138,6 @@ private TypeDrinkService TypedrinkService;
             return ResponseEntity.notFound().build();
         }
     }
-
 
     @GetMapping("/listar")
     @Operation(summary = "Obtener lista de bebidas ", description = "Obtener lista de bebidas")
@@ -149,7 +146,7 @@ private TypeDrinkService TypedrinkService;
             @ApiResponse(responseCode = "404", description = "bebidas no encontrados")
     })
     public ResponseEntity<List<DrinkModel>> listarBebidas() {
-        List <DrinkModel> drink = drinkService.findAll();
+        List<DrinkModel> drink = drinkService.findAll();
         if (drink != null) {
             return ResponseEntity.ok(drink);
         } else {
@@ -165,7 +162,7 @@ private TypeDrinkService TypedrinkService;
     })
     public ResponseEntity<DrinkModel> actualizarDrink(@PathVariable int id, @RequestBody DrinkModel drinkModel) {
         drinkModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        DrinkModel actualizarDrink= drinkService.actualizarDrinks(id, drinkModel);
+        DrinkModel actualizarDrink = drinkService.actualizarDrinks(id, drinkModel);
         if (actualizarDrink != null) {
             return ResponseEntity.ok(actualizarDrink);
         } else {

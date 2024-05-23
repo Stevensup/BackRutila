@@ -24,14 +24,11 @@ import java.util.List;
 @RequestMapping("/detailsOrder")
 public class DetailOrderController {
 
-
-
     @Autowired
     private OrderDetailsService orderDetailsService;
 
     @Autowired
     private DrinkService drinkService;
-
 
     @PostMapping("/registrar")
     @Operation(summary = "Agregar Detalle de ordenes", description = "Agrega Detalle de ordenes")
@@ -40,23 +37,19 @@ public class DetailOrderController {
             @ApiResponse(responseCode = "500", description = "Error al guardar detalle de ordenes")
     })
     public ResponseEntity<String> guardarDetalleOrdenes(@RequestBody OrderDetailsModel order) {
-        try{
+        try {
             order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
-           orderDetailsService.saveOrderDetail(order,order.getOrder());
+            orderDetailsService.saveOrderDetail(order, order.getOrder());
             return ResponseEntity.ok("Detalle de orden guardado con éxito");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("No se inserto el tipo de bebida "+order);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar la tipo de bebida "+ e.getMessage());
+            System.out.println("No se inserto el tipo de bebida " + order);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al guardar la tipo de bebida " + e.getMessage());
         }
 
-
     }
-
-
-
-
 
     @PutMapping("/eliminar/{id}")
     @Operation(summary = "Borrado Logico", description = "Elimina un Detalle de orden existente según su ID.")
@@ -65,10 +58,10 @@ public class DetailOrderController {
             @ApiResponse(responseCode = "404", description = "Detalle de orde no encontrado")
     })
     public ResponseEntity<OrderDetailsModel> eliminadoLogico(@PathVariable int id) {
-       OrderDetailsModel actualizadoOrder;
+        OrderDetailsModel actualizadoOrder;
         LocalDateTime now = LocalDateTime.now();
         Timestamp deletedTimestamp = Timestamp.valueOf(now);
-        actualizadoOrder= orderDetailsService.eliminadoLogico(id,deletedTimestamp);
+        actualizadoOrder = orderDetailsService.eliminadoLogico(id, deletedTimestamp);
 
         if (actualizadoOrder != null) {
             return ResponseEntity.ok(actualizadoOrder);
@@ -84,13 +77,14 @@ public class DetailOrderController {
             @ApiResponse(responseCode = "404", description = "detalles de ordenes no encontrados")
     })
     public ResponseEntity<List<OrderDetailsModel>> listarDetalles() {
-        List <OrderDetailsModel> orders = orderDetailsService.findALl();
+        List<OrderDetailsModel> orders = orderDetailsService.findALl();
         if (orders != null) {
             return ResponseEntity.ok(orders);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("/actualizar/{id}")
     @Operation(summary = "Actualizar los  detalles de una orden", description = "Actualiza los detalles de una orden existente.")
     @ApiResponses(value = {
@@ -98,7 +92,8 @@ public class DetailOrderController {
             @ApiResponse(responseCode = "404", description = "Detalle de orden  no encontrado", content = @Content(schema = @Schema(implementation = String.class)))
     })
 
-    public ResponseEntity<OrderDetailsModel> actualizarDetails(@PathVariable int id, @RequestBody OrderDetailsModel orderDetailsModel) {
+    public ResponseEntity<OrderDetailsModel> actualizarDetails(@PathVariable int id,
+            @RequestBody OrderDetailsModel orderDetailsModel) {
         orderDetailsModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         OrderDetailsModel actualizarDetalles = orderDetailsService.actualizarDetails(id, orderDetailsModel);
         if (actualizarDetalles != null) {
@@ -107,6 +102,5 @@ public class DetailOrderController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
 
 }

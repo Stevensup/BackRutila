@@ -13,6 +13,12 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The InvoiceService class is responsible for handling operations related to
+ * invoices.
+ * It provides methods for saving, updating, and retrieving invoices from the
+ * database.
+ */
 @Service
 public class InvoiceService {
     private final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
@@ -23,12 +29,17 @@ public class InvoiceService {
     @Autowired
     private OrderRepository orderRepository;
 
-
+    /**
+     * Saves an invoice and its associated order to the database.
+     * 
+     * @param invoice    The invoice to be saved.
+     * @param orderModel The associated order.
+     * @return The saved invoice.
+     */
     @Transactional
-    public InvoiceModel saveInvoice(InvoiceModel invoice, OrderModel orderModel){
+    public InvoiceModel saveInvoice(InvoiceModel invoice, OrderModel orderModel) {
         orderModel.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         OrderModel savedOrder = orderRepository.save(orderModel);
-
 
         invoice.setOrder(savedOrder);
         invoice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
@@ -37,7 +48,14 @@ public class InvoiceService {
         return invoiceModel;
     }
 
-    public  InvoiceModel eliminadoLogico(int id, Timestamp deleted) {
+    /**
+     * Performs a logical deletion of an invoice by setting its deletedAt timestamp.
+     * 
+     * @param id      The ID of the invoice to be deleted.
+     * @param deleted The timestamp of the deletion.
+     * @return The deleted invoice.
+     */
+    public InvoiceModel eliminadoLogico(int id, Timestamp deleted) {
         Optional<InvoiceModel> optionalInvoice = invoiceRepository.findById(id);
 
         if (optionalInvoice.isPresent()) {
@@ -49,24 +67,42 @@ public class InvoiceService {
         }
     }
 
-
-        public InvoiceModel searchByid(int id){
-
+    /**
+     * Retrieves an invoice by its ID.
+     * 
+     * @param id The ID of the invoice to be retrieved.
+     * @return The retrieved invoice.
+     */
+    public InvoiceModel searchByid(int id) {
         return invoiceRepository.findByIdAndDeletedAtIsNull(id);
-        }
+    }
 
-
-
-        public InvoiceModel searchBydates(String dates){
+    /**
+     * Retrieves an invoice by its dates.
+     * 
+     * @param dates The dates of the invoice to be retrieved.
+     * @return The retrieved invoice.
+     */
+    public InvoiceModel searchBydates(String dates) {
         return invoiceRepository.findByDatesAndDeletedAtIsNull(dates);
-        }
+    }
 
-
-        public List<InvoiceModel> findAll(){
+    /**
+     * Retrieves all invoices from the database.
+     * 
+     * @return A list of all invoices.
+     */
+    public List<InvoiceModel> findAll() {
         return invoiceRepository.findAllByDeletedAtIsNull();
-        }
+    }
 
-
+    /**
+     * Updates an existing invoice in the database.
+     * 
+     * @param id           The ID of the invoice to be updated.
+     * @param invoiceModel The updated invoice.
+     * @return The updated invoice.
+     */
     public InvoiceModel actualizarInvoice(int id, InvoiceModel invoiceModel) {
         if (invoiceRepository.existsById(id)) {
             invoiceModel.setId(id);
@@ -75,8 +111,4 @@ public class InvoiceService {
             return null;
         }
     }
-
-
-
-
 }

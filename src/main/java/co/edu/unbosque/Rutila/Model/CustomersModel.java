@@ -1,15 +1,18 @@
 package co.edu.unbosque.Rutila.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import java.sql.Timestamp;
-import java.util.List;
 
+/**
+ * This class represents the CustomersModel entity in the database.
+ * It contains the attributes and methods related to a customer.
+ */
 @Data
 @Entity
 @Getter
@@ -29,22 +32,27 @@ public class CustomersModel {
 
     private String phone;
     private String email;
-@JsonIgnore
+
+    @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
-@JsonIgnore
+
+    @JsonIgnore
     @Column(name = "updated_at", nullable = true)
     private Timestamp updatedAt;
-@JsonIgnore
-@Column(name = "deleted_at", nullable = true)
+
+    @JsonIgnore
+    @Column(name = "deleted_at", nullable = true)
     private Timestamp deletedAt;
 
-
-
-
+    /**
+     * Returns a string representation of the CustomersModel object.
+     *
+     * @return a string representation of the object.
+     */
     @Override
     public String toString() {
-        return "ClientModel{" +
+        return "CustomersModel{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", location='" + location + '\'' +
@@ -53,7 +61,6 @@ public class CustomersModel {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
-
                 '}';
     }
 }

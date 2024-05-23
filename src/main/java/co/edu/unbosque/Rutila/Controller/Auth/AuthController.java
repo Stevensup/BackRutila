@@ -53,7 +53,7 @@ public class AuthController {
                 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
                 String storedHashedPassword = userModel.getHash_password();
-                if (passwordEncoder.matches(userPassword, storedHashedPassword)) {
+                if (passwordEncoder.matches(userPassword,storedHashedPassword)) {
                     // Restablecer el contador de intentos fallidos si la autenticación es exitosa
                     userService.resetFailedAttempts(email);
 
