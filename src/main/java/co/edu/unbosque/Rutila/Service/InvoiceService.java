@@ -33,15 +33,11 @@ public class InvoiceService {
      * Saves an invoice and its associated order to the database.
      * 
      * @param invoice    The invoice to be saved.
-     * @param orderModel The associated order.
      * @return The saved invoice.
      */
     @Transactional
-    public InvoiceModel saveInvoice(InvoiceModel invoice, OrderModel orderModel) {
-        orderModel.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        OrderModel savedOrder = orderRepository.save(orderModel);
+    public InvoiceModel saveInvoice(InvoiceModel invoice) {
 
-        invoice.setOrder(savedOrder);
         invoice.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         InvoiceModel invoiceModel = invoiceRepository.save(invoice);
         logger.info("Se guardo la factura");

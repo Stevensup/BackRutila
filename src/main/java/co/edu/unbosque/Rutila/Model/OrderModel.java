@@ -76,19 +76,7 @@ public class OrderModel {
    @Column(name = "id_user")
    private int idusers;
 
-   /**
-    * The list of order details associated with the order.
-    */
-   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-   @JsonIgnore
-   private List<OrderDetailsModel> orderDetails;
 
-   /**
-    * The invoice associated with the order.
-    */
-   @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-   @JsonIgnore
-   private InvoiceModel invoice;
 
    /**
     * Returns a string representation of the OrderModel object.

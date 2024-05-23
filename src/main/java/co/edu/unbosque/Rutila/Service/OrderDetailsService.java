@@ -38,16 +38,16 @@ public class OrderDetailsService {
      * timestamp.
      * 
      * @param orderDetail The order detail to be saved.
-     * @param order       The order to be updated.
+
      * @return The saved order detail.
      */
-    public OrderDetailsModel saveOrderDetail(OrderDetailsModel orderDetail, OrderModel order) {
-        order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+    public OrderDetailsModel saveOrderDetail(OrderDetailsModel orderDetail) {
+
      DrinkModel drink= drinkRepository.findByIdAndDeletedAtIsNull(orderDetail.getId_drink());
      drink.setAvailability(drink.getAvailability()-orderDetail.getAmount());
      drink.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
          drinkRepository.save(drink);
-        OrderModel savedOrder = orderRepository.save(order);
+
 
         OrderDetailsModel orderDetailsModel = orderDetailsRepository.save(orderDetail);
         logger.info("Se guardo exitosamente");

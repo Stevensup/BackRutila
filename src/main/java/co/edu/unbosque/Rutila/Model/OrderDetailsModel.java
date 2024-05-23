@@ -59,12 +59,9 @@ public class OrderDetailsModel {
      */
     private int id_drink;
 
-    /**
-     * The order that the order details belong to.
-     */
-    @ManyToOne
-    @JoinColumn(name = "id_order", nullable = false)
-    private OrderModel order;
+
+@Column(name ="id_order")
+    private int id_order;
 
     /**
      * Returns a string representation of the OrderDetailsModel object.

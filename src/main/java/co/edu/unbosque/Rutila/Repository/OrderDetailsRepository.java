@@ -25,8 +25,8 @@ public interface OrderDetailsRepository extends JpaRepository<OrderDetailsModel,
     /**
      * Retrieves all OrderDetailsModel objects associated with a specific order ID.
      *
-     * @param orderId the ID of the order
+     * @param idOrder ID of the order
      * @return a list of OrderDetailsModel objects with the given order ID
      */
-    List<OrderDetailsModel> findByOrderId(int orderId);
+
 }

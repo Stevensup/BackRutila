@@ -63,9 +63,8 @@ public class InvoiceModel {
     /**
      * The associated order of the invoice.
      */
-    @OneToOne
-    @JoinColumn(name = "id_order", nullable = false)
-    private OrderModel order;
+    @Column(name="id_order")
+    private int id_order;
 
     /**
      * Returns a string representation of the InvoiceModel object.
@@ -81,7 +80,7 @@ public class InvoiceModel {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", deletedAt=" + deletedAt +
-                ", orders=" + order +
+                ", orders=" + id_order +
                 '}';
     }
 }

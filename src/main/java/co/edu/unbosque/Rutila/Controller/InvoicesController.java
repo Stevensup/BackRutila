@@ -37,7 +37,7 @@ public class InvoicesController {
     })
     public ResponseEntity<String> crearFactura(@RequestBody InvoiceModel invoiceModel) {
         try {
-            invoiceService.saveInvoice(invoiceModel, invoiceModel.getOrder());
+            invoiceService.saveInvoice(invoiceModel);
 
             return ResponseEntity.ok("Se inserto la factura");
         } catch (Exception e) {

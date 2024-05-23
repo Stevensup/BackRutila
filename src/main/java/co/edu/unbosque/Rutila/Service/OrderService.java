@@ -46,33 +46,8 @@ public class OrderService {
         return orderModel;
     }
 
-    /**
-     * Creates an order with an associated invoice.
-     * 
-     * @param order   The order to be created.
-     * @param invoice The invoice associated with the order.
-     * @return The created order.
-     */
-    @Transactional
-    public OrderModel createOrderWithInvoice(OrderModel order, InvoiceModel invoice) {
-        // Save the order first to get its ID
-        OrderModel savedOrder = orderRepository.save(order);
 
-        // Set the saved order to each order detail and save it
-        for (OrderDetailsModel orderDetail : order.getOrderDetails()) {
-            orderDetail.setOrder(savedOrder);
-            orderDetailsRepository.save(orderDetail);
-        }
 
-        // Set the saved order to the invoice and save it
-        invoice.setOrder(savedOrder);
-        invoiceRepository.save(invoice);
-
-        // Set the invoice to the saved order
-        savedOrder.setInvoice(invoice);
-
-        return savedOrder;
-    }
 
     /**
      * Performs a logical deletion of an order by setting its deletedAt timestamp.
