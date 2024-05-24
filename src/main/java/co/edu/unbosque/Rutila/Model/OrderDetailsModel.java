@@ -59,6 +59,9 @@ public class OrderDetailsModel {
      */
     private int id_drink;
 
+    @Transient
+    private String drink;
+
 
 @Column(name ="id_order")
     private int id_order;

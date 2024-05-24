@@ -80,7 +80,13 @@ public class OrderDetailsService {
      * @return A list of order details.
      */
     public List<OrderDetailsModel> findALl() {
-        return orderDetailsRepository.findAllByDeletedAtIsNull();
+        List<OrderDetailsModel> orders  = orderDetailsRepository.findAllByDeletedAtIsNull();
+        for (OrderDetailsModel order : orders) {
+            String drinks = drinkRepository.findByIdAndDeletedAtIsNull(order.getId_drink()).getName();
+
+            order.setDrink(drinks);
+        }
+        return orders;
     }
 
     /**
