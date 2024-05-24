@@ -17,6 +17,6 @@ public class LogsService {
 
     public List<LogsModel> findAll(){
 
-        return logsRepository.findAll();
+        return logsRepository.findAllByOrderByIdDesc();
     }
 }
