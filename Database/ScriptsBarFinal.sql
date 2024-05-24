@@ -133,7 +133,39 @@ CREATE TABLE logs (
 );
 
 
-
+CREATE VIEW invoice_view AS
+SELECT 
+    invoices.id AS invoice_number,
+    customers.name AS customer_name,
+    order_details.amount AS quantity,
+    drinks.name AS drink_name,
+    drinks.price AS drink_price,
+    pubs.name AS pub_name,
+    users.name AS seller_name,
+    (order_details.amount * drinks.price) AS total_price,
+    invoices.dates AS invoice_date
+FROM 
+    invoices
+JOIN 
+    orders ON invoices.id_order = orders.id
+JOIN 
+    customers ON orders.id_customer = customers.id
+JOIN 
+    order_details ON order_details.id_order = orders.id
+JOIN 
+    drinks ON order_details.id_drink = drinks.id
+JOIN 
+    pubs ON orders.id_pub = pubs.id
+JOIN 
+    users ON orders.id_user = users.id
+WHERE 
+    invoices.deleted_at IS NULL
+    AND orders.deleted_at IS NULL
+    AND customers.deleted_at IS NULL
+    AND order_details.deleted_at IS NULL
+    AND drinks.deleted_at IS NULL
+    AND pubs.deleted_at IS NULL
+    AND users.deleted_at IS NULL;
 
 
 CREATE VIEW top_selling_drinks AS
