@@ -15,7 +15,7 @@ public class InvoiceViewService {
     private InvoiceViewRepository invoiceViewRepository;
 
 
-    public  List<InvoiceViewModel> findAll(){
-        return invoiceViewRepository.findAll();
+    public  InvoiceViewModel findOne(int id){
+        return invoiceViewRepository.findByInvoiceNumber(id);
     }
 }

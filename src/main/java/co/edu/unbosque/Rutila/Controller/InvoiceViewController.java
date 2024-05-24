@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,14 +21,17 @@ public class InvoiceViewController {
 
 @Autowired
 private InvoiceViewService invoiceViewService;
-    @GetMapping("/listar")
-    @Operation(summary = "Obtener lista de detalles de la factura ", description = "Obtener lista de detalles de la factura")
+
+
+
+@GetMapping("/id/{id}")
+    @Operation(summary = "Obtener Factura por su id", description = "Obtener los Facturas por sus id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "detalles de factura encontrados"),
-            @ApiResponse(responseCode = "404", description = " detalles de factura no encontrados")
+            @ApiResponse(responseCode = "200", description = "Facturas encontrado"),
+            @ApiResponse(responseCode = "404", description = "Facturas no encontrado")
     })
-    public ResponseEntity<List<InvoiceViewModel>> listarFacturas() {
-        List<InvoiceViewModel> invoice = invoiceViewService.findAll();
+    public ResponseEntity<InvoiceViewModel> obtenerFacturasPorId(@PathVariable int id) {
+        InvoiceViewModel invoice = invoiceViewService.findOne(id);
         if (invoice != null) {
             return ResponseEntity.ok(invoice);
         } else {
